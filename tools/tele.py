@@ -108,13 +108,13 @@ class TelegramPars():
         self.working_data = []
 
     def check_save(self):
-        with open("timeless_data\\groups.txt","r") as fl: 
+        with open("timeless_data/groups.txt","r") as fl: 
             dat = fl.read()
             dat = dat.split(',')
             return(dat)
 
     def save_group(self,group):
-        with open("timeless_data\\groups.txt","a") as fl: 
+        with open("timeless_data/groups.txt","a") as fl: 
             fl.write(f'{group},')
     
     def collect_msgs_from_channels(self):

@@ -188,7 +188,7 @@ class Main():
                 return (self.main_menu())
             case 8:
                 try:
-                    with open("timeless_data\\groups.txt", 'w', encoding='utf-8') as fl:
+                    with open("timeless_data/groups.txt", 'w', encoding='utf-8') as fl:
                         fl.write('')
                 except Exception as e:
                     print("Ошибка")
@@ -281,7 +281,7 @@ class Main():
                     time.sleep(5)
                 return (self.main_menu())
             case 99:
-                break
+                return None
             case _:
                 print("Нет такой опции")
                 time.sleep(5)

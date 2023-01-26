@@ -40,7 +40,7 @@ class InstPars(Thread):
         options.binary_location = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"
         options.add_argument("window-size=1600,900")
         # подгрузка кэша браузера
-        options.add_argument('--user-data-dir={}\\Cache'.format(os.getcwd()))
+        options.add_argument('--user-data-dir={}/Cache'.format(os.getcwd()))
         # выбор профиля кэша
         options.add_argument('--profile-directory=Default')
         # Доп. параметры
@@ -118,7 +118,7 @@ chrome.webRequest.onAuthRequired.addListener(
             ['blocking']
 );
 """ % (PROXY_HOST, PROXY_PORT, PROXY_USER, PROXY_PASS)
-        pluginfile = 'settings\\proxy_auth_plugin.zip'
+        pluginfile = 'settings/proxy_auth_plugin.zip'
 
         with zipfile.ZipFile(pluginfile, 'w') as zp:
             zp.writestr("manifest.json", manifest_json)
@@ -406,7 +406,7 @@ chrome.webRequest.onAuthRequired.addListener(
     def __article_from_story(self, url, mode):
         match mode:
             case 'video':
-                video_path = f'timeless_data\\story_{self.name}.mp4'
+                video_path = f'timeless_data/story_{self.name}.mp4'
                 urllib.request.urlretrieve(url, video_path)
                 vidcap = cv2.VideoCapture(video_path)
                 success, image = vidcap.read()
