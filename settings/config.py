@@ -63,12 +63,12 @@ from googleapiclient.discovery import build
 import google.auth
 
 config = configparser.ConfigParser()
-config.read(r'/settings/settings.ini')  # читаем конфиг
+config.read(r'settings/settings.ini')  # читаем конфиг
 
 # pytesseract.pytesseract.tesseract_cmd = r'Tesseract-OCR\tesseract'
 
 def config_update():
-    with open(r'/settings/settings.ini', 'w') as f:
+    with open(r'settings/settings.ini', 'w') as f:
         config.write(f)
 
 import logging
