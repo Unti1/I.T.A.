@@ -95,8 +95,8 @@ class Main():
     def main_menu(self):
         print("Выберите нужную опцию:")
         print("\t1. Запуск")
-        print("\t2. Тестирования модуля для публикаций")
-        print("\t3. Тестирования модуля для сторис")
+        print("\t2. Тестирования модуля для инстаграма")
+        print("\t3. Тестирования модуля машинного зрения")
         print("\t4. Скорость интернет-соединения")
         print("\t5. Изменить ТОКЕН для MpStats")
 
@@ -123,27 +123,24 @@ class Main():
                 return (self.main_menu())
             case 2:
                 try:
-                    е = InstPars(google_services='')
-                    е.test_pub()
-                    e.running = False
-                    time.sleep(5)
+                    googl = GoogleService()
+                    i = InstPars(LOGIN="instaparstable@gmail.com",
+                                PASSWORD="Qweasdzxc123!", google_services=googl)
+                    i.check_this_pages.append(("https://instagram.com/nastya_pro_wb", 5000))
+                    # i.run()
+                    print("Тестирование историй...")
+                    i.test_stories()
+                    print("Тестирование постов...")
+                    i.test_pub()
+                    i.running = False
+                    googl.running = False
+                    time.sleep(10)
                 except Exception as e:
                     print("Произошла ошибка...")
                     logging.error(traceback.format_exc())
                     time.sleep(5)
                 return (self.main_menu())
             case 3:
-                try:
-                    е = InstPars(google_services='')
-                    е.test_pub()
-                    e.running = False
-                    time.sleep(5)
-                except Exception as e:
-                    print("Произошла ошибка...")
-                    logging.error(traceback.format_exc())
-                    time.sleep(5)
-                return (self.main_menu())
-            case 41:
                 try:
                     img_path = f'timeless_data/test.png'
                     image = cv2.imread(img_path)
