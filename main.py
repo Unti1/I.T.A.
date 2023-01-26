@@ -4,6 +4,7 @@ from tools.mpstats import MpStats
 from tools.insta import InstPars
 from tools.tele import TelegramPars
 
+
 class Main():
     def __init__(self):
         self.running = True
@@ -19,7 +20,8 @@ class Main():
         '''
         # Добоавляем потоки
         self.MainTreeProcesses.append(GoogleService())
-        self.MainTreeProcesses.append(TelegramPars(google_service=self.MainTreeProcesses[0]))
+        self.MainTreeProcesses.append(TelegramPars(
+            google_service=self.MainTreeProcesses[0]))
         for _ in range(len(self.MainTreeProcesses), cpu_counts-2):
             self.MainTreeProcesses.append(InstPars(
                 LOGIN=config['Instagram']['Login'],
@@ -31,7 +33,7 @@ class Main():
             PASSWORD=config['Instagram']['Password'],
             invisable=True,
             google_services=self.MainTreeProcesses[0],
-            checking = True))
+            checking=True))
         # Запускаем потоки
         self.MainTreeProcesses[1].run()
         for proc in self.MainTreeProcesses:
@@ -105,9 +107,9 @@ class Main():
         print("\t99. Выход")
         try:
             chs = int(input("\n>>> Ответ(цифра опции): "))
-            os.system("CLS")
+            os.system("clear")
         except:
-            os.system("CLS")
+            os.system("clear")
             return (self.main_menu())
 
         match chs:
@@ -288,23 +290,22 @@ class Main():
                 return (self.main_menu())
 
 
-
-
-def monitoring_screen(mainproc:Main):
+def monitoring_screen(mainproc: Main):
     while mainproc.running:
-        while mainproc.MainTreeProcesses[0].running: 
+        while mainproc.MainTreeProcesses[0].running:
             try:
                 mainproc.google_monitor(mainproc.MainTreeProcesses[0])
                 mainproc.tele_monitor(mainproc.MainTreeProcesses[1])
                 for proc in mainproc.MainTreeProcesses[2:]:
                     mainproc.inst_monitor(proc)
                 time.sleep(3)
-                os.system("CLS")
+                os.system("clear")
             except:
                 logging.info(traceback.format_exc())
         else:
             time.sleep(10)
 
+
 if __name__ == "__main__":
     m = Main().main_menu()
-    Thread(target=monitoring_screen,args=(m))
+    Thread(target=monitoring_screen, args=(m))
