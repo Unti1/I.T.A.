@@ -29,6 +29,7 @@ class InstPars(Thread):
             'guard': "Не заблокирован"
         }
         self.running = True
+        self.checking = checking
         self.check_this_pages = []  # сюда передаются объекты телеграмм
         self.checked_pages = {}
 
@@ -627,7 +628,7 @@ chrome.webRequest.onAuthRequired.addListener(
     def run(self):
         self.__login()
         while self.running:
-            if checking:
+            if self.checking:
                 self.always_rechecking_by_time()
             else:
                 if len(self.check_this_pages) != 0:
@@ -658,4 +659,10 @@ if __name__ == "__main__":
     i = InstPars(LOGIN="instaparstable@gmail.com",
                  PASSWORD="Qweasdzxc123!", google_services=googl)
     i.check_this_pages.append(("https://instagram.com/nastya_pro_wb", 5000))
-    i.run()
+    # i.run()
+    print("Тестирование историй")
+    i.test_stories()
+    print("Тестирование постов")
+    i.test_pub()
+    i.running = False
+    googl.running = False
