@@ -279,6 +279,8 @@ class Main():
                     logging.error(traceback.format_exc())
                     time.sleep(5)
                 return (self.main_menu())
+            case 99:
+                break
             case _:
                 print("Нет такой опции")
                 time.sleep(5)
