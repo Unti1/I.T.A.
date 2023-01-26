@@ -4,9 +4,6 @@ from tools.mpstats import MpStats
 from tools.insta import InstPars
 from tools.tele import TelegramPars
 
-config = configparser.ConfigParser()
-config.read(r'.\settings\settings.ini')  # читаем конфиг
-
 class Main():
     def __init__(self):
         self.running = True
