@@ -38,7 +38,7 @@ class InstPars(Thread):
         """
         # Настройка браузера Google
         options = webdriver.ChromeOptions()
-        options.binary_location = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"
+        # options.binary_location = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"
         options.add_argument("window-size=1600,900")
         # подгрузка кэша браузера
         options.add_argument('--user-data-dir={}/Cache'.format(os.getcwd()))
