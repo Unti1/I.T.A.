@@ -142,7 +142,7 @@ class Main():
                 return (self.main_menu())
             case 41:
                 try:
-                    img_path = f'timeless_data\\test.png'
+                    img_path = f'timeless_data/test.png'
                     image = cv2.imread(img_path)
                     gry1 = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
                     thr1 = cv2.threshold(
