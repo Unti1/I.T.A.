@@ -52,8 +52,8 @@ class InstPars(Thread):
 
         if invisable:
             options.add_argument('--headless')
-        chrome_options.add_argument('--no-sandbox')
-        chrome_options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
         
         if USERPASSPROXY:
             options.add_argument('--proxy-server=%s' % USERPASSPROXY)
