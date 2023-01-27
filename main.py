@@ -93,18 +93,19 @@ class Main():
         print("-"*20)
 
     def main_menu(self):
-        print("Выберите нужную опцию:")
-        print("\t1. Запуск")
-        print("\t2. Тестирования модуля для инстаграма")
-        print("\t3. Тестирования модуля машинного зрения")
-        print("\t4. Скорость интернет-соединения")
-        print("\t5. Изменить ТОКЕН для MpStats")
-
-        print("\t6. Тестирования модуля машинного зрения")
-        print("\t8. Очистить список групп")
-        print("\t9. Изменить некоторые парамтры параметры")
-        print("\t0. Просмотреть текущие параметры")
-        print("\t99. Выход")
+        print("___________________________________________")
+        print("|Выберите нужную опцию:                    |")
+        print("|\t1. Запуск                               |")
+        print("|\t2. Тестирования модуля для инстаграма   |")
+        print("|\t3. Тестирования модуля машинного зрения |")
+        print("|\t4.* Скорость интернет-соединения        |")
+        print("|\t5. Изменить ТОКЕН для MpStats           |")
+        print("|\t6. Тестирования модуля машинного зрения |")
+        print("|\t8. Очистить список групп                |")
+        print("|\t9. Изменить некоторые парамтры параметры|")
+        print("|\t0. Просмотреть текущие параметры        |")
+        print("|\t99. Выход                               |")
+        print("___________________________________________")
         try:
             chs = int(input("\n>>> Ответ(цифра опции): "))
             os.system("clear")
@@ -125,8 +126,11 @@ class Main():
                 try:
                     googl = GoogleService()
                     i = InstPars(LOGIN="instaparstable@gmail.com",
-                                PASSWORD="Qweasdzxc123!", google_services=googl)
-                    i.check_this_pages.append(("https://instagram.com/nastya_pro_wb", 5000))
+                                 PASSWORD="Qweasdzxc123!",
+                                 google_services=googl,
+                                 invisable=True)
+                    i.check_this_pages.append(
+                        ("https://instagram.com/nastya_pro_wb", 5000))
                     # i.run()
                     print("Тестирование историй...")
                     i.test_stories()
@@ -280,6 +284,7 @@ class Main():
                     time.sleep(5)
                 return (self.main_menu())
             case 99:
+                self.running = False
                 return None
             case _:
                 print("Нет такой опции")
