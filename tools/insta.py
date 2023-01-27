@@ -604,11 +604,11 @@ chrome.webRequest.onAuthRequired.addListener(
             return (self.driver.get(page))
 
     def test_pub(self):
-        print("Тестирование для постов... ")
+        # print("Тестирование для постов... ")
         print(self.all_publish_collect("https://instagram.com/nastya_pro_wb"))
 
     def test_stories(self):
-        print("Тестирование для сторис...")
+        # print("Тестирование для сторис...")
         try:
             s = self.realse_collect("https://instagram.com/nastya_pro_wb")
         except:
