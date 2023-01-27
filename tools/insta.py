@@ -489,9 +489,13 @@ chrome.webRequest.onAuthRequired.addListener(
                     access_btn.click()
             except Exception as e:
                 pass
-        except Exception as e:
+        except exceptions.TimeoutException as e:
             self.status['auth'] = "Авторизирован"
+            logging.info("Авторизован")
+            logging.info(traceback.format_exc())
             print("Профиль уже авторизирован")
+        except:
+            logging.info(traceback.format_exc())
 
     def __acception_challange(self, page="https://instagram.com"):
         """Модуль обхода блокировки """
