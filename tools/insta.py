@@ -638,6 +638,8 @@ chrome.webRequest.onAuthRequired.addListener(
         pass
     
     def run(self):
+        vdisplay = Xvfb()
+        vdisplay.start()
         self.__login()
         while self.running:
             if self.checking:
@@ -664,7 +666,7 @@ chrome.webRequest.onAuthRequired.addListener(
                     self.mpstats_analize_profile(user_url, cost)
                 else:
                     time.sleep(5)
-
+                vdisplay.stop()
 
 if __name__ == "__main__":
     googl = GoogleService()

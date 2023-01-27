@@ -15,8 +15,9 @@ from selenium import webdriver
 
 """Прочие необходимые библиотеки"""
 from PIL import Image, ImageEnhance, ImageFilter
-from io import BytesIO
 from threading import Thread
+from xvfbwrapper import Xvfb
+from io import BytesIO
 import urllib.request
 import configparser
 import traceback
