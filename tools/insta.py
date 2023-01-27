@@ -605,14 +605,21 @@ chrome.webRequest.onAuthRequired.addListener(
 
     def test_pub(self):
         # print("Тестирование для постов... ")
-        print(self.all_publish_collect("https://instagram.com/nastya_pro_wb"))
+        self.__login()
+        try:
+            print(self.all_publish_collect("https://instagram.com/nastya_pro_wb"))
+        except:
+            logging.error(traceback.format_exc())
+            logging.info(self.driver.page_source)
 
     def test_stories(self):
         # print("Тестирование для сторис...")
         try:
+            self.__login()
             s = self.realse_collect("https://instagram.com/nastya_pro_wb")
         except:
             logging.error(traceback.format_exc())
+            logging.info(self.driver.page_source)
     
     def always_rechecking_by_time(self):
         while self.running:
@@ -624,7 +631,6 @@ chrome.webRequest.onAuthRequired.addListener(
                 if dtime + datetime.timedelta(hours=12) <= datetime.datetime.now():
                     self.mpstats_analize_profile(dat[0],dat[1],articuls,recheck=True)
             time.sleep(3600)
-
         pass
     
     def run(self):
