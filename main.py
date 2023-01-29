@@ -128,7 +128,7 @@ class Main():
                     i = InstPars(LOGIN="instaparstable@gmail.com",
                                  PASSWORD="Qweasdzxc123!",
                                  google_services=googl,
-                                 invisable=True)
+                                 invisable=False)
                     i.check_this_pages.append(
                         ("https://instagram.com/nastya_pro_wb", 5000))
                     # i.run()
