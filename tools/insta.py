@@ -31,6 +31,7 @@ class InstPars(Thread):
         self.running = True
         self.checking = checking
         self.check_this_pages = []  # сюда передаются объекты телеграмм
+        self.total_len_check = len(self.check_this_pages)
         self.checked_pages = {}
 
     def browser_startUp(self, USERPASSPROXY, invisable):
@@ -189,6 +190,7 @@ chrome.webRequest.onAuthRequired.addListener(
             logging.error(traceback.format_exc())
 
     def all_profile_collect(self, page):
+        logging.info(f"{self.name} >>>> {page}")
         try:
             pub = self.all_publish_collect(page)
         except Exception as e:
@@ -491,9 +493,9 @@ chrome.webRequest.onAuthRequired.addListener(
                 pass
         except exceptions.TimeoutException as e:
             self.status['auth'] = "Авторизирован"
-            logging.info("Авторизован")
+            # logging.info("Авторизован")
             logging.info(traceback.format_exc())
-            print("Профиль уже авторизирован")
+            # print("Профиль уже авторизирован")
         except:
             logging.info(traceback.format_exc())
 
@@ -614,7 +616,6 @@ chrome.webRequest.onAuthRequired.addListener(
             print(self.all_publish_collect("https://instagram.com/nastya_pro_wb"))
         except:
             logging.error(traceback.format_exc())
-            logging.info(self.driver.page_source)
 
     def test_stories(self):
         # print("Тестирование для сторис...")
@@ -623,7 +624,6 @@ chrome.webRequest.onAuthRequired.addListener(
             s = self.realse_collect("https://instagram.com/nastya_pro_wb")
         except:
             logging.error(traceback.format_exc())
-            logging.info(self.driver.page_source)
     
     def always_rechecking_by_time(self):
         while self.running:
@@ -638,15 +638,17 @@ chrome.webRequest.onAuthRequired.addListener(
         pass
     
     def run(self):
-        vdisplay = Xvfb()
-        vdisplay.start()
         self.__login()
         while self.running:
             if self.checking:
-                self.always_rechecking_by_time()
+                try:
+                    self.always_rechecking_by_time()
+                except:
+                    logging.error(traceback.format_exc())
             else:
                 if len(self.check_this_pages) != 0:
-
+                    if len(self.check_this_pages) > self.total_len_check:
+                        self.total_len_check = len(self.check_this_pages)
                     data = self.check_this_pages.pop()
                     user_url = data[0]
                     logging.info(user_url)
@@ -666,7 +668,6 @@ chrome.webRequest.onAuthRequired.addListener(
                     self.mpstats_analize_profile(user_url, cost)
                 else:
                     time.sleep(5)
-                vdisplay.stop()
 
 if __name__ == "__main__":
     googl = GoogleService()

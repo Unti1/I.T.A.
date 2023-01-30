@@ -34,16 +34,18 @@ class Main():
             invisable=True,
             google_services=self.MainTreeProcesses[0],
             checking=True))
+        self.MainTreeProcesses[1].run() # Собираем данные для пользователей
         # Запускаем потоки
-        self.MainTreeProcesses[1].run()
+
         for proc in self.MainTreeProcesses:
             try:
                 proc.start()
             except:
                 pass
+        Thread(target=monitoring_screen, args=(self)).run()
         while self.MainTreeProcesses[0].running:
             while self.MainTreeProcesses[1].working_data != []:
-                for proc in self.MainTreeProcesses[2:-1]:
+                for proc in self.MainTreeProcesses[2:-1]:# со второго процесса идет добавление ссылок
                     try:
                         proc.check_this_pages.append(
                             self.MainTreeProcesses[1].working_data.pop())
@@ -68,6 +70,7 @@ class Main():
             print(f"Сбор рилсов: {inst_thread.status['stories']}")
         print(f"Сбор историй: {inst_thread.status['realse']}")
         print(f"Статус блокировки: {inst_thread.status['guard']}")
+        print(f"Выполненно: {inst_thread.total_len_check - len(inst_thread.check_this_pages)}/{inst_thread.total_len_check}")
         print("-"*21)
 
     def google_monitor(self, google_thread: GoogleService):
@@ -293,21 +296,20 @@ class Main():
 
 
 def monitoring_screen(mainproc: Main):
-    while mainproc.running:
-        while mainproc.MainTreeProcesses[0].running:
-            try:
-                mainproc.google_monitor(mainproc.MainTreeProcesses[0])
-                mainproc.tele_monitor(mainproc.MainTreeProcesses[1])
-                for proc in mainproc.MainTreeProcesses[2:]:
-                    mainproc.inst_monitor(proc)
-                time.sleep(3)
-                os.system("clear")
-            except:
-                logging.info(traceback.format_exc())
-        else:
-            time.sleep(10)
+    while mainproc.MainTreeProcesses[0].running:
+        try:
+            mainproc.google_monitor(mainproc.MainTreeProcesses[0])
+            mainproc.tele_monitor(mainproc.MainTreeProcesses[1])
+            for proc in mainproc.MainTreeProcesses[2:]:
+                mainproc.inst_monitor(proc)
+            time.sleep(3)
+            os.system("clear")
+        except:
+            logging.info(f"Ошибка отображения {traceback.format_exc()}")
+    else:
+        time.sleep(10)
 
 
 if __name__ == "__main__":
     m = Main().main_menu()
-    Thread(target=monitoring_screen, args=(m))
+    
