@@ -429,7 +429,7 @@ chrome.webRequest.onAuthRequired.addListener(
                 #     os.remove(video_path)
             case 'img':
                 img_data = requests.get(url).content
-                img_path = f'timeless_data\\story_{self.name}.png'
+                img_path = f'timeless_data/story_{self.name}.png'
                 with open(img_path, 'wb') as handler:
                     handler.write(img_data)
                 image = cv2.imread(img_path)
