@@ -452,6 +452,12 @@ chrome.webRequest.onAuthRequired.addListener(
         self.driver.get("https://instagram.com")
         try:
             self.status['auth'] = "Попытка авторизации"
+            try: 
+                allow_cookie = self.driver.find_elements(By.XPATH,"//div/button")[-1]
+                if "Allow" in allow_cookie.text.lower:
+                    allow_cookie.click()
+            except:
+                pass
             WebDriverWait(self.driver, int(config['Instagram']['logining_wait'])).until(
                 EC.element_to_be_clickable((By.XPATH, '//input[@name="username"]')))
             login = self.driver.find_element(
