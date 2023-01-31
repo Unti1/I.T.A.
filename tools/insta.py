@@ -452,9 +452,12 @@ chrome.webRequest.onAuthRequired.addListener(
         self.driver.get("https://instagram.com")
         try:
             self.status['auth'] = "Попытка авторизации"
-            try: 
+            try:
+                time.sleep(2)
                 allow_cookie = self.driver.find_elements(By.XPATH,"//div/button")[-1]
+                print(allow_cookie.text)
                 if "allow" in allow_cookie.text.lower():
+            
                     allow_cookie.click()
             except:
                 pass
