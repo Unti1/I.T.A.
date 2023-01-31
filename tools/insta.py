@@ -182,7 +182,7 @@ chrome.webRequest.onAuthRequired.addListener(
                     d = [user_url, cost, mean_from_means,
                         datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),str(transform_data)]
                 else:
-                    transform_data = list(map(lambda x: [x[0],x[1].strftime('%Y-%m-%d')],articuls))
+                    transform_data = list(map(lambda x: [x[0],x[1]],articuls))
                     d = [user_url, cost, mean_from_means,
                         datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),str(transform_data)]
                 self.google_services.append_db(d)
