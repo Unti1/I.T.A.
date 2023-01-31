@@ -454,7 +454,7 @@ chrome.webRequest.onAuthRequired.addListener(
             self.status['auth'] = "Попытка авторизации"
             try: 
                 allow_cookie = self.driver.find_elements(By.XPATH,"//div/button")[-1]
-                if "Allow" in allow_cookie.text.lower:
+                if "Allow" in allow_cookie.text.lower():
                     allow_cookie.click()
             except:
                 pass
