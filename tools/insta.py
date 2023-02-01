@@ -457,7 +457,6 @@ chrome.webRequest.onAuthRequired.addListener(
                 allow_cookie = self.driver.find_elements(By.XPATH,"//div/button")[-1]
                 print(allow_cookie.text)
                 if "allow" in allow_cookie.text.lower():
-            
                     allow_cookie.click()
             except:
                 pass
@@ -486,7 +485,7 @@ chrome.webRequest.onAuthRequired.addListener(
                 psw.send_keys(self.PASSWORD)
                 btn = self.driver.find_elements(By.XPATH, '//button')[1]
                 btn.click()
-
+                
             ######### Прохождение челленджей #######
             self.__acception_challange()
 
