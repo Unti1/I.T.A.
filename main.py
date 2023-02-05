@@ -128,8 +128,8 @@ class Main():
             case 2:
                 try:
                     googl = GoogleService()
-                    i = InstPars(LOGIN="instaparstable@gmail.com",
-                                 PASSWORD="Qweasdzxc123!",
+                    i = InstPars(LOGIN=config['Instagram']['Login'],
+                                 PASSWORD=config['Instagram']['Password'],
                                  google_services=googl,
                                  invisable=False)
                     i.check_this_pages.append(
