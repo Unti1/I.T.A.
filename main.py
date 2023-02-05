@@ -131,7 +131,8 @@ class Main():
                     i = InstPars(LOGIN=config['Instagram']['Login'],
                                  PASSWORD=config['Instagram']['Password'],
                                  google_services=googl,
-                                 invisable=False)
+                                 invisable=False,
+                                 USERPASSPROXY="feS6nu:vYWByH5ev7yr@77.253.215.117:1041")
                     i.check_this_pages.append(
                         ("https://instagram.com/nastya_pro_wb", 5000))
                     # i.run()
