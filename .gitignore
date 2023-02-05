@@ -2,6 +2,10 @@ Include
 Lib
 Scripts
 Tesseract-OCR
-settings/settings.ini
-settings/token.json
-settings/credentials.json
+settings.ini
+token.json
+credentials.json
+lib64
+bin
+Cache
+pyvenv.cfg
