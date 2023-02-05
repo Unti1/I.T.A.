@@ -57,8 +57,8 @@ class InstPars(Thread):
         options.add_argument('--disable-dev-shm-usage')
         
         if USERPASSPROXY:
-            options.add_argument('--proxy-server=%s' % USERPASSPROXY)
-            # options.add_extension(self.__proxy_act(USERPASSPROXY))
+            # options.add_argument('--proxy-server=%s' % USERPASSPROXY)
+            options.add_extension(self.__proxy_act(USERPASSPROXY))
         serv = Service(ChromeDriverManager().install())
         # Запуск эмулятора браузера
         self.driver: webdriver.Chrome = webdriver.Chrome(
