@@ -1,11 +1,9 @@
-from settings.config import *
+from tools.tele import *
+from tools.google import *
 
-options = webdriver.ChromeOptions()
-# options.add_argument('headless')
-options.add_argument('--no-sandbox')
-driver= webdriver.Chrome(options=options)
-serv = Service(ChromeDriverManager().install())
-driver.get('https://www.instagram.com/support_point/')
-time.sleep(10)
-print(driver.title)
-driver.quit()
+
+if __name__ == "__main__":
+    g = GoogleService()
+    # print(client.loop.run_until_complete(collect_msgs_from_telegram_channel("https://t.me/otzovik_blogger")))
+    TelegramPars(g).run()
+    print(1)

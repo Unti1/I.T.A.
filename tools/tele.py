@@ -94,7 +94,8 @@ async def collect_msgs_from_telegram_channel(url):
                             m = re.search(
                                 r"(?:\d{1,}.\d{2,}|\d{3,})", msg.lower())
                             if m:
-                                final_lst.append((acc_url,m[0]))
+                                cost = "".join(list(filter(lambda x: x in [str(x) for x in range(10)],m[0])))
+                                final_lst.append((acc_url,cost))
     return final_lst
 
 class TelegramPars():
@@ -102,12 +103,13 @@ class TelegramPars():
         self.google: GoogleService = google_service # подключается гуг сервис для сбора ссылок с таблицы
         self.running = True
         self.all_channels = self.google.telegram_channels()
-        self.saved_data = self.check_save()
+        self.saved_data = self.check_save_groups()
+        self.telegram_profiles_data = self.check_parsed_profiles()
         self.len_chan = len(self.all_channels)
         self.len_now = 0
         self.working_data = []
 
-    def check_save(self):
+    def check_save_groups(self):
         with open("timeless_data/groups.txt","r") as fl: 
             dat = fl.read()
             dat = dat.split(',')
@@ -117,6 +119,37 @@ class TelegramPars():
         with open("timeless_data/groups.txt","a") as fl: 
             fl.write(f'{group},')
     
+    def check_parsed_profiles(self):
+        data_path = "timeless_data/telegram_profiles.csv"
+        data = []
+        if os.path.exists(data_path):
+            with open(data_path,'r',encoding='utf-8') as fl:
+                reader = csv.reader(fl)
+                for row in reader:
+                    data.append(row)
+                return(data)
+        else:
+            with open(data_path,'w',encoding='utf-8') as fl:
+                fl.write("")
+                return([])
+
+    def append_parsed_profiles(self,info):
+        """Дозапись профилей в базу
+        Args:
+            info (_type_): (ссылка, цена, собран или нет?)
+        """
+        data_path = "timeless_data/telegram_profiles.csv"
+        self.telegram_profiles_data = self.check_parsed_profiles()
+        already_appended = []
+        with open(data_path,'a',encoding='utf-8') as fl:
+            writer = csv.writer(fl,dialect = 'excel')
+            for row in info:
+                if (row[0] not in list(map(lambda x: x[0],self.telegram_profiles_data))) and row[0] not in already_appended:
+                    row = list(row)
+                    row.append("False")
+                    writer.writerow(row)
+                    already_appended.append(row[0])
+    
     def collect_msgs_from_channels(self):
         with client:
             while self.all_channels != []:
@@ -124,7 +157,10 @@ class TelegramPars():
                     url_group = self.all_channels.pop()
                     if url_group not in self.saved_data:
                         loop_data = client.loop.run_until_complete(collect_msgs_from_telegram_channel(url_group))
-                        self.working_data.extend(loop_data)
+                        self.append_parsed_profiles(loop_data)
+                        self.working_data = list(filter(lambda dat: dat[-1] != "True",self.check_parsed_profiles()))
+                        # print("Итого работаем с: ",self.working_data)
+                        self.working_data.extend(self.check_parsed_profiles())
                         self.saved_data.append(url_group)
                         self.save_group(url_group)
                         self.len_now += 1
@@ -135,13 +171,18 @@ class TelegramPars():
                     pass
                 except:
                     logging.error(traceback.format_exc())
-                
+            else:
+                self.working_data = list(filter(lambda dat: dat[-1] != "True",self.check_parsed_profiles()))
+            if self.working_data != []:
+                self.working_data = list(map(lambda dat: dat[:-1],self.working_data))
+            print(self.working_data)
     def run(self):
         try:
             if self.all_channels != []:
                 self.collect_msgs_from_channels()
         except:
             logging.error(traceback.format_exc())
+
 if __name__ == "__main__":
     pass
     g = GoogleService()

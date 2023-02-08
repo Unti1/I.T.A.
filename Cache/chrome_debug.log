@@ -1,19 +1,2 @@
-[10248:4612:0114/172006.740:WARNING:chrome_main_delegate.cc(607)] This is Chrome version 109.0.5414.74 (not a warning)
-[10248:4612:0114/172016.218:ERROR:device_event_log_impl.cc(215)] [17:20:16.219] USB: usb_device_handle_win.cc:1046 Failed to read descriptor from node connection: ѕрисоединенное к системе устройство не работает. (0x1F)
-[10248:4612:0114/172016.228:ERROR:device_event_log_impl.cc(215)] [17:20:16.228] USB: usb_device_handle_win.cc:1046 Failed to read descriptor from node connection: ѕрисоединенное к системе устройство не работает. (0x1F)
-[10248:4612:0114/172016.898:INFO:model_executor_impl.cc(195)] Segmentation model result: 0 for segment OPTIMIZATION_TARGET_SEGMENTATION_SHOPPING_USER
-[10248:4612:0114/172016.902:INFO:model_executor_impl.cc(195)] Segmentation model result: 1 for segment CROSS_DEVICE_USER_SEGMENT
-[10248:4612:0114/172101.314:INFO:CONSOLE(371)] "[ORDER_SYNC]: user id is 0 - initializing empty inner storage", source: https://static.wbstatic.net/j/spa/index.min.js?bdcf824e481ebebf (371)
-[10248:4612:0114/172104.227:INFO:CONSOLE(371)] "[ORDER_SYNC]: user id is 0 - initializing empty inner storage", source: https://static.wbstatic.net/j/spa/index.min.js?bdcf824e481ebebf (371)
-[10248:4612:0114/172107.661:INFO:CONSOLE(371)] "[ORDER_SYNC]: user id is 0 - initializing empty inner storage", source: https://static.wbstatic.net/j/spa/index.min.js?bdcf824e481ebebf (371)
-[10248:4612:0114/172109.867:INFO:CONSOLE(371)] "[ORDER_SYNC]: user id is 0 - initializing empty inner storage", source: https://static.wbstatic.net/j/spa/index.min.js?bdcf824e481ebebf (371)
-[10248:4612:0114/172127.512:INFO:CONSOLE(371)] "[ORDER_SYNC]: user id is 0 - initializing empty inner storage", source: https://static.wbstatic.net/j/spa/index.min.js?bdcf824e481ebebf (371)
-[10248:4612:0114/172152.113:INFO:CONSOLE(371)] "[ORDER_SYNC]: user id is 0 - initializing empty inner storage", source: https://static.wbstatic.net/j/spa/index.min.js?bdcf824e481ebebf (371)
-[10248:4612:0114/172155.841:INFO:CONSOLE(371)] "[ORDER_SYNC]: user id is 0 - initializing empty inner storage", source: https://static.wbstatic.net/j/spa/index.min.js?bdcf824e481ebebf (371)
-[10248:4612:0114/172158.405:INFO:CONSOLE(371)] "[ORDER_SYNC]: user id is 0 - initializing empty inner storage", source: https://static.wbstatic.net/j/spa/index.min.js?bdcf824e481ebebf (371)
-[10248:4612:0114/172201.045:INFO:CONSOLE(371)] "[ORDER_SYNC]: user id is 0 - initializing empty inner storage", source: https://static.wbstatic.net/j/spa/index.min.js?bdcf824e481ebebf (371)
-[10248:4612:0114/172203.873:INFO:CONSOLE(371)] "[ORDER_SYNC]: user id is 0 - initializing empty inner storage", source: https://static.wbstatic.net/j/spa/index.min.js?bdcf824e481ebebf (371)
-[10248:4612:0114/172302.284:INFO:CONSOLE(371)] "[ORDER_SYNC]: user id is 0 - initializing empty inner storage", source: https://static.wbstatic.net/j/spa/index.min.js?bdcf824e481ebebf (371)
-[10248:4612:0114/172305.820:INFO:CONSOLE(371)] "[ORDER_SYNC]: user id is 0 - initializing empty inner storage", source: https://static.wbstatic.net/j/spa/index.min.js?bdcf824e481ebebf (371)
-[10248:4612:0114/172308.748:INFO:CONSOLE(371)] "[ORDER_SYNC]: user id is 0 - initializing empty inner storage", source: https://static.wbstatic.net/j/spa/index.min.js?bdcf824e481ebebf (371)
-[10248:4612:0114/172311.558:INFO:CONSOLE(371)] "[ORDER_SYNC]: user id is 0 - initializing empty inner storage", source: https://static.wbstatic.net/j/spa/index.min.js?bdcf824e481ebebf (371)
+[48489:48489:0207/151507.769210:WARNING:chrome_main_delegate.cc(607)] This is Chrome version 109.0.5414.119 (not a warning)
+[48527:48527:0100/000000.281111:WARNING:sandbox_linux.cc(385)] InitializeSandbox() called with multiple threads in process gpu-process.

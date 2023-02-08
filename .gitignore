@@ -1,10 +1,13 @@
+__pycache__
 Include
 Lib
 Scripts
 Tesseract-OCR
-settings.ini
-token.json
-credentials.json
+*.ini
+*.log
+*.json
+*.session
+*.zip
 lib64
 bin
 Cache

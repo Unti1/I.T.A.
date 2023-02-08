@@ -1,0 +1,200 @@
+17:19:12 - mtprotosender
+[INFO] _connect:
+ 226 - Connecting to 149.154.167.51:443/TcpFull...
+17:19:12 - mtprotosender
+[INFO] _connect:
+ 277 - Connection to 149.154.167.51:443/TcpFull complete!
+17:19:14 - __init__
+[INFO] autodetect:
+ 49 - file_cache is only supported with oauth2client<4.0.0
+17:19:17 - tele
+[INFO] collect_msgs_from_channels:
+ 166 - ['', 'https://t.me/Rbinstagram']
+17:19:18 - tele
+[INFO] collect_msgs_from_channels:
+ 166 - ['', 'https://t.me/Rbinstagram', 'https://t.me/adbloggers']
+17:19:19 - tele
+[INFO] collect_msgs_from_channels:
+ 166 - ['', 'https://t.me/Rbinstagram', 'https://t.me/adbloggers', 'https://t.me/otzovik_blogger']
+17:19:20 - tele
+[INFO] collect_msgs_from_channels:
+ 166 - ['', 'https://t.me/Rbinstagram', 'https://t.me/adbloggers', 'https://t.me/otzovik_blogger', 'https://t.me/u_blogerov']
+17:19:21 - tele
+[INFO] collect_msgs_from_channels:
+ 166 - ['', 'https://t.me/Rbinstagram', 'https://t.me/adbloggers', 'https://t.me/otzovik_blogger', 'https://t.me/u_blogerov', 'https://t.me/fromBerek']
+17:19:21 - mtprotosender
+[INFO] _disconnect:
+ 317 - Disconnecting from 149.154.167.51:443/TcpFull...
+17:19:21 - mtprotosender
+[INFO] _disconnect:
+ 337 - Disconnection from 149.154.167.51:443/TcpFull complete!
+17:20:42 - mtprotosender
+[INFO] _connect:
+ 226 - Connecting to 149.154.167.51:443/TcpFull...
+17:20:43 - mtprotosender
+[INFO] _connect:
+ 277 - Connection to 149.154.167.51:443/TcpFull complete!
+17:20:44 - __init__
+[INFO] autodetect:
+ 49 - file_cache is only supported with oauth2client<4.0.0
+17:20:48 - tele
+[INFO] collect_msgs_from_channels:
+ 168 - ['', 'https://t.me/otzovik_blogger']
+17:20:49 - tele
+[INFO] collect_msgs_from_channels:
+ 168 - ['', 'https://t.me/otzovik_blogger', 'https://t.me/u_blogerov']
+17:20:51 - tele
+[INFO] collect_msgs_from_channels:
+ 168 - ['', 'https://t.me/otzovik_blogger', 'https://t.me/u_blogerov', 'https://t.me/adbloggers']
+17:20:52 - tele
+[INFO] collect_msgs_from_channels:
+ 168 - ['', 'https://t.me/otzovik_blogger', 'https://t.me/u_blogerov', 'https://t.me/adbloggers', 'https://t.me/fromBerek']
+17:20:53 - tele
+[INFO] collect_msgs_from_channels:
+ 168 - ['', 'https://t.me/otzovik_blogger', 'https://t.me/u_blogerov', 'https://t.me/adbloggers', 'https://t.me/fromBerek', 'https://t.me/Rbinstagram']
+17:20:53 - mtprotosender
+[INFO] _disconnect:
+ 317 - Disconnecting from 149.154.167.51:443/TcpFull...
+17:20:53 - mtprotosender
+[INFO] _disconnect:
+ 337 - Disconnection from 149.154.167.51:443/TcpFull complete!
+17:24:56 - mtprotosender
+[INFO] _connect:
+ 226 - Connecting to 149.154.167.51:443/TcpFull...
+17:24:56 - mtprotosender
+[INFO] _connect:
+ 277 - Connection to 149.154.167.51:443/TcpFull complete!
+17:24:58 - __init__
+[INFO] autodetect:
+ 49 - file_cache is only supported with oauth2client<4.0.0
+17:25:00 - mtprotosender
+[INFO] _disconnect:
+ 317 - Disconnecting from 149.154.167.51:443/TcpFull...
+17:25:00 - mtprotosender
+[INFO] _disconnect:
+ 337 - Disconnection from 149.154.167.51:443/TcpFull complete!
+17:25:34 - mtprotosender
+[INFO] _connect:
+ 226 - Connecting to 149.154.167.51:443/TcpFull...
+17:25:35 - mtprotosender
+[INFO] _connect:
+ 277 - Connection to 149.154.167.51:443/TcpFull complete!
+17:25:35 - __init__
+[INFO] autodetect:
+ 49 - file_cache is only supported with oauth2client<4.0.0
+17:25:38 - mtprotosender
+[INFO] _disconnect:
+ 317 - Disconnecting from 149.154.167.51:443/TcpFull...
+17:25:38 - mtprotosender
+[INFO] _disconnect:
+ 337 - Disconnection from 149.154.167.51:443/TcpFull complete!
+17:25:54 - mtprotosender
+[INFO] _connect:
+ 226 - Connecting to 149.154.167.51:443/TcpFull...
+17:25:54 - mtprotosender
+[INFO] _connect:
+ 277 - Connection to 149.154.167.51:443/TcpFull complete!
+17:25:55 - __init__
+[INFO] autodetect:
+ 49 - file_cache is only supported with oauth2client<4.0.0
+17:26:00 - tele
+[INFO] collect_msgs_from_channels:
+ 167 - ['', 'https://t.me/adbloggers']
+17:26:00 - tele
+[INFO] collect_msgs_from_channels:
+ 167 - ['', 'https://t.me/adbloggers', 'https://t.me/otzovik_blogger']
+17:26:01 - tele
+[INFO] collect_msgs_from_channels:
+ 167 - ['', 'https://t.me/adbloggers', 'https://t.me/otzovik_blogger', 'https://t.me/u_blogerov']
+17:26:02 - tele
+[INFO] collect_msgs_from_channels:
+ 167 - ['', 'https://t.me/adbloggers', 'https://t.me/otzovik_blogger', 'https://t.me/u_blogerov', 'https://t.me/Rbinstagram']
+17:26:03 - tele
+[INFO] collect_msgs_from_channels:
+ 167 - ['', 'https://t.me/adbloggers', 'https://t.me/otzovik_blogger', 'https://t.me/u_blogerov', 'https://t.me/Rbinstagram', 'https://t.me/fromBerek']
+17:26:03 - mtprotosender
+[INFO] _disconnect:
+ 317 - Disconnecting from 149.154.167.51:443/TcpFull...
+17:26:03 - mtprotosender
+[INFO] _disconnect:
+ 337 - Disconnection from 149.154.167.51:443/TcpFull complete!
+17:27:13 - mtprotosender
+[INFO] _connect:
+ 226 - Connecting to 149.154.167.51:443/TcpFull...
+17:27:13 - mtprotosender
+[INFO] _connect:
+ 277 - Connection to 149.154.167.51:443/TcpFull complete!
+17:27:15 - __init__
+[INFO] autodetect:
+ 49 - file_cache is only supported with oauth2client<4.0.0
+17:27:18 - mtprotosender
+[INFO] _disconnect:
+ 317 - Disconnecting from 149.154.167.51:443/TcpFull...
+17:27:18 - mtprotosender
+[INFO] _disconnect:
+ 337 - Disconnection from 149.154.167.51:443/TcpFull complete!
+17:29:25 - mtprotosender
+[INFO] _connect:
+ 226 - Connecting to 149.154.167.51:443/TcpFull...
+17:29:25 - mtprotosender
+[INFO] _connect:
+ 277 - Connection to 149.154.167.51:443/TcpFull complete!
+17:29:28 - __init__
+[INFO] autodetect:
+ 49 - file_cache is only supported with oauth2client<4.0.0
+17:29:30 - mtprotosender
+[INFO] _disconnect:
+ 317 - Disconnecting from 149.154.167.51:443/TcpFull...
+17:29:30 - mtprotosender
+[INFO] _disconnect:
+ 337 - Disconnection from 149.154.167.51:443/TcpFull complete!
+17:29:30 - tele
+[ERROR] run:
+ 184 - Traceback (most recent call last):
+  File "/home/unti1/MyWork/Orders/InstaTeleParser/tools/tele.py", line 182, in run
+    self.collect_msgs_from_channels()
+  File "/home/unti1/MyWork/Orders/InstaTeleParser/tools/tele.py", line 178, in collect_msgs_from_channels
+    print(self.working_data())
+          ^^^^^^^^^^^^^^^^^^^
+TypeError: 'list' object is not callable
+
+17:29:50 - mtprotosender
+[INFO] _connect:
+ 226 - Connecting to 149.154.167.51:443/TcpFull...
+17:29:51 - mtprotosender
+[INFO] _connect:
+ 277 - Connection to 149.154.167.51:443/TcpFull complete!
+17:29:52 - __init__
+[INFO] autodetect:
+ 49 - file_cache is only supported with oauth2client<4.0.0
+17:29:54 - mtprotosender
+[INFO] _disconnect:
+ 317 - Disconnecting from 149.154.167.51:443/TcpFull...
+17:29:54 - mtprotosender
+[INFO] _disconnect:
+ 337 - Disconnection from 149.154.167.51:443/TcpFull complete!
+17:29:55 - tele
+[ERROR] run:
+ 184 - Traceback (most recent call last):
+  File "/home/unti1/MyWork/Orders/InstaTeleParser/tools/tele.py", line 182, in run
+    self.collect_msgs_from_channels()
+  File "/home/unti1/MyWork/Orders/InstaTeleParser/tools/tele.py", line 178, in collect_msgs_from_channels
+    print(self.working_data())
+          ^^^^^^^^^^^^^^^^^^^
+TypeError: 'list' object is not callable
+
+17:31:51 - mtprotosender
+[INFO] _connect:
+ 226 - Connecting to 149.154.167.51:443/TcpFull...
+17:31:51 - mtprotosender
+[INFO] _connect:
+ 277 - Connection to 149.154.167.51:443/TcpFull complete!
+17:31:59 - __init__
+[INFO] autodetect:
+ 49 - file_cache is only supported with oauth2client<4.0.0
+17:32:04 - mtprotosender
+[INFO] _disconnect:
+ 317 - Disconnecting from 149.154.167.51:443/TcpFull...
+17:32:04 - mtprotosender
+[INFO] _disconnect:
+ 337 - Disconnection from 149.154.167.51:443/TcpFull complete!

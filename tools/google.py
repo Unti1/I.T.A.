@@ -115,7 +115,7 @@ class GoogleService(Thread):
                 .execute()
             logging.info(
                 f"Spreadsheet ID: {(spreadsheet.get('spreadsheetId'))}")
-            # print(f"Spreadsheet ID: {(spreadsheet.get('spreadsheetId'))}")
+            print(f"Spreadsheet ID: {(spreadsheet.get('spreadsheetId'))}")
             return spreadsheet.get('spreadsheetId')
         except HttpError as error:
             logging.error(f"An error occurred: {error}")

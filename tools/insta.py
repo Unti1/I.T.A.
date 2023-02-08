@@ -9,7 +9,7 @@ class InstPars(Thread):
         super(InstPars, self).__init__()
         
         # Эмулятор
-        self.browser_startUp(USERPASSPROXY, invisable)
+        self.browser_startUp(USERPASSPROXY = USERPASSPROXY, invisable = invisable)
         self.action = ActionChains(self.driver)
         # Переменные
         self.status_of_working: bool = True
@@ -17,7 +17,7 @@ class InstPars(Thread):
         self.PASSWORD: str = PASSWORD
         # Сторонние классы
         self.google_services: GoogleService = google_services
-        self.phone = VirtualNumber()
+        # self.phone = VirtualNumber()
         self.mpstats = MpStats()
 
         # Инициализация потока
@@ -26,8 +26,11 @@ class InstPars(Thread):
             'publish': "Ещё не запущен",
             'realse': "Ещё не запущен",
             'stories': "Ещё не запущен",
-            'guard': "Не заблокирован"
+            'guard': "Не заблокирован",
+            'actions': "0",
+
         }
+        self.used_actions = 0
         self.running = True
         self.checking = checking
         self.check_this_pages = []  # сюда передаются объекты телеграмм
@@ -57,8 +60,9 @@ class InstPars(Thread):
         options.add_argument('--disable-dev-shm-usage')
         
         if USERPASSPROXY:
+            pass
             # options.add_argument('--proxy-server=%s' % USERPASSPROXY)
-            options.add_extension(self.__proxy_act(USERPASSPROXY))
+            # options.add_extension(self.__proxy_act(USERPASSPROXY))
         serv = Service(ChromeDriverManager().install())
         # Запуск эмулятора браузера
         self.driver: webdriver.Chrome = webdriver.Chrome(
@@ -211,19 +215,23 @@ chrome.webRequest.onAuthRequired.addListener(
         return (pub)
 
     def all_publish_collect(self, page):
+        """Сбор всех публикаций"""
         self.status['publish'] = 'В процессе сбора постов'
-        self.__acception_challange(page)
-        publish_links = []
+        self.__acception_challange(page) # проверка ошибок
+        publish_links = [] # Все собранные ссылки
         max_pub = int(config["Instagram"]["max_publishes"])
         Y = 1000
-        last_len = len(publish_links)
+        last_len = len(publish_links) # Последняя полученная длина
         WebDriverWait(self.driver, 15).until(
             EC.element_to_be_clickable((By.XPATH, '//article//a[@role="link"]')))
+
         while len(publish_links) < max_pub:
             publish_links = list(map(lambda x: x.get_attribute(
                 "href"), self.driver.find_elements(By.XPATH, '//article//a[@role="link"]')))
+            self.used_actions += len(publish_links)
             self.driver.execute_script(f"window.scrollTo(0, {Y})")
-            if len(publish_links) == last_len:
+            if len(publish_links) == last_len:#Если собранная длина равна прошлой => постов больше нет
+                logging.info(f"Завершение сбора ссылок на публикации {last_len}было {len(publish_links)}стало")
                 break
             last_len = len(publish_links)
             Y += 1000
@@ -260,7 +268,6 @@ chrome.webRequest.onAuthRequired.addListener(
         time.sleep(int(config["Instagram"]["preload_timeout"]))
         stories_el = self.driver.find_elements(
             By.XPATH, '//div[@role="presentation"]/div/ul/li[@class]')  # сперва собираем количество историй
-
         for num in range(len(stories_el)):  # Начинаем проход по каждому
             try:
                 WebDriverWait(self.driver, 15, ignored_exceptions=exceptions.StaleElementReferenceException).until(
@@ -307,7 +314,8 @@ chrome.webRequest.onAuthRequired.addListener(
             EC.element_to_be_clickable((By.XPATH, '//section//header//button[@aria-label]')))
         time.sleep(int(config["Instagram"]["story_timeout"]))
         stories = self.driver.find_elements(By.XPATH, '//header/div[1]/div')
-        story_len = len(stories)
+        story_len = len(stories) #длина всех историй
+        self.used_actions += story_len
         # print(f'>Длина истории {story_len}')
         origin_window = self.driver.current_window_handle
         for _ in range(story_len):
@@ -513,6 +521,9 @@ chrome.webRequest.onAuthRequired.addListener(
         while "challenge" in self.driver.current_url:
             self.status['guard'] = 'Обход заморозки'
             if "что вы владелец этого аккаунта" in self.driver.page_source.lower():
+                self.running = False   
+                return(self.driver.quit())
+                '''Модуль не используется
                 self.status['guard'] = 'Выбор метода получения кода'
                 try:
                     WebDriverWait(self.driver, 10).until(
@@ -533,52 +544,58 @@ chrome.webRequest.onAuthRequired.addListener(
 
                     WebDriverWait(self.driver, 10).until(
                         EC.element_to_be_clickable((By.XPATH, '//input')))
-                    match chose_method:
-                        case "mail":
-                            self.status['guard'] = 'Ожидание кода на почте'
-                            code = self.google_services.get_mail_code()
-                            btns = self.driver.find_elements(
-                                By.XPATH, '//div[@role="button"]')
-                            if code == "":
-                                for btn in btns:
-                                    if "новый код" in btn.text.lower():
-                                        btn.click()
-                                        break
-                                continue
-                            else:
-                                self.driver.find_element(
-                                    By.XPATH, '//input').send_keys(code)
-                                for btn in btns:
-                                    if "подтвердить" in btn.text.lower():
-                                        btn.click()
-                                        break
-                        case "sms":
-                            self.status['guard'] = 'Ожидание кода по номеру'
-                            code = self.phone.check_sms()
-                            if code == "":
-                                btns = self.driver.find_elements(
-                                    By.XPATH, '//div[@role="button"]')
-                                for btn in btns:
-                                    if "новый код" in btn.text.lower():
-                                        btn.click()
-                                        break
-                                continue
-                            else:
-                                self.driver.find_element(
-                                    By.XPATH, '//input').send_keys(code)
-                                for btn in btns:
-                                    if "подтвердить" in btn.text.lower():
-                                        btn.click()
-                                        break
+                    # match chose_method:
+                    #     case "mail":
+                    #         self.status['guard'] = 'Ожидание кода на почте'
+                    #         code = self.google_services.get_mail_code()
+                    #         btns = self.driver.find_elements(
+                    #             By.XPATH, '//div[@role="button"]')
+                    #         if code == "":
+                    #             for btn in btns:
+                    #                 if "новый код" in btn.text.lower():
+                    #                     btn.click()
+                    #                     break
+                    #             continue
+                    #         else:
+                    #             self.driver.find_element(
+                    #                 By.XPATH, '//input').send_keys(code)
+                    #             for btn in btns:
+                    #                 if "подтвердить" in btn.text.lower():
+                    #                     btn.click()
+                    #                     break
+                    #     case "sms":
+                    #         self.status['guard'] = 'Ожидание кода по номеру'
+                    #         # code = self.phone.check_sms()
+                    #         if code == "":
+                    #             btns = self.driver.find_elements(
+                    #                 By.XPATH, '//div[@role="button"]')
+                    #             for btn in btns:
+                    #                 if "новый код" in btn.text.lower():
+                    #                     btn.click()
+                    #                     break
+                    #             continue
+                    #         else:
+                    #             self.driver.find_element(
+                    #                 By.XPATH, '//input').send_keys(code)
+                    #             for btn in btns:
+                    #                 if "подтвердить" in btn.text.lower():
+                    #                     btn.click()
+                    #                     break
                 except:
-                    pass
+                    pass'''
             elif "верна ли информация вашего профиля" in self.driver.page_source.lower():
+                self.running = False
+                return(self.driver.quit())
+                ''' Модуль не используется
                 WebDriverWait(self.driver, 10).until(
                     EC.element_to_be_clickable((By.XPATH, '//div[@role="button"]')))
                 for but in self.driver.find_elements(By.XPATH, '//div[@role="button"]'):
                     if 'да' in but.text.lower():
-                        but.click()
+                        but.click()'''
             else:
+                self.running = False
+                return(self.driver.quit())
+                '''Модуль не используется
                 try:
                     WebDriverWait(self.driver, 10).until(
                         EC.element_to_be_clickable((By.XPATH, '//input')))
@@ -612,13 +629,12 @@ chrome.webRequest.onAuthRequired.addListener(
                                 self.driver.find_elements(
                                     By.XPATH, '//div[@role="button"]')[-1].click()
                 except:
-                    pass
+                    pass'''
         else:
             self.status['guard'] = 'Не заблокирован'
             return (self.driver.get(page))
 
     def test_pub(self):
-        # print("Тестирование для постов... ")
         self.__login()
         try:
             print(self.all_publish_collect("https://instagram.com/nastya_pro_wb"))
@@ -626,7 +642,6 @@ chrome.webRequest.onAuthRequired.addListener(
             logging.error(traceback.format_exc())
 
     def test_stories(self):
-        # print("Тестирование для сторис...")
         try:
             self.__login()
             s = self.realse_collect("https://instagram.com/nastya_pro_wb")
@@ -647,7 +662,7 @@ chrome.webRequest.onAuthRequired.addListener(
     
     def run(self):
         self.__login()
-        while self.running:
+        while self.running and self.used_actions <= config["Instagram"]["total_actions"]:
             if self.checking:
                 try:
                     self.always_rechecking_by_time()
@@ -668,6 +683,7 @@ chrome.webRequest.onAuthRequired.addListener(
                     self.status['realse'] = "Ещё не запущен"
                     self.status['publish'] = "Ещё не запущен"
                     self.status['guard'] = "Не заблокирован"
+                    self.status['actions'] = f"{self.used_actions}"
                     while self.mpstats.working != True:
                         self.status['guard'] = 'Смените API-токен MpStats'
                         time.sleep(5)

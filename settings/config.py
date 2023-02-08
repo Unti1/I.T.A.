@@ -32,6 +32,7 @@ import time
 import json
 import ast
 import cv2
+import csv
 import re
 import os
 
@@ -71,6 +72,7 @@ config.read(r'settings/settings.ini')  # читаем конфиг
 def config_update():
     with open(r'settings/settings.ini', 'w') as f:
         config.write(f)
+    config.read(r'settings/settings.ini')
 
 import logging
 logging.basicConfig(

@@ -1,3 +1,3 @@
-2023/01/14-17:20:07.642 3b60 Reusing MANIFEST C:\MyWork\Orders\InstaTeleAnalyzer\Cache\Default\shared_proto_db\metadata/MANIFEST-000001
-2023/01/14-17:20:07.643 3b60 Recovering log #3
-2023/01/14-17:20:07.644 3b60 Reusing old log C:\MyWork\Orders\InstaTeleAnalyzer\Cache\Default\shared_proto_db\metadata/000003.log 
+2023/02/07-15:15:06.251 bcef Reusing MANIFEST /home/unti1/MyWork/Orders/InstaTeleParser/Cache/Default/shared_proto_db/metadata/MANIFEST-000001
+2023/02/07-15:15:06.252 bcef Recovering log #3
+2023/02/07-15:15:06.252 bcef Reusing old log /home/unti1/MyWork/Orders/InstaTeleParser/Cache/Default/shared_proto_db/metadata/000003.log 

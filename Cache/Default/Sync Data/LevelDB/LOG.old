@@ -1,3 +1,3 @@
-2023/01/14-17:09:14.860 253c Reusing MANIFEST C:\MyWork\Orders\InstaTeleAnalyzer\Cache\Default\Sync Data\LevelDB/MANIFEST-000001
-2023/01/14-17:09:14.861 253c Recovering log #3
-2023/01/14-17:09:14.862 253c Reusing old log C:\MyWork\Orders\InstaTeleAnalyzer\Cache\Default\Sync Data\LevelDB/000003.log 
+2023/02/07-15:13:06.196 b727 Reusing MANIFEST /home/unti1/MyWork/Orders/InstaTeleParser/Cache/Default/Sync Data/LevelDB/MANIFEST-000001
+2023/02/07-15:13:06.196 b727 Recovering log #3
+2023/02/07-15:13:06.196 b727 Reusing old log /home/unti1/MyWork/Orders/InstaTeleParser/Cache/Default/Sync Data/LevelDB/000003.log 

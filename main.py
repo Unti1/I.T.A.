@@ -4,10 +4,31 @@ from tools.mpstats import MpStats
 from tools.insta import InstPars
 from tools.tele import TelegramPars
 
+class Monitor(Thread):
+    def __inti__(self):
+        self.main_class = None
+
+    def monitoring_screen(self):
+        while self.main_class.MainTreeProcesses[0].running:
+            try:
+                self.main_class.google_monitor(self.main_class.MainTreeProcesses[0])
+                self.main_class.tele_monitor(self.main_class.MainTreeProcesses[1])
+                for proc in self.main_class.MainTreeProcesses[2:]:
+                    self.main_class.inst_monitor(proc)
+                time.sleep(3)
+                os.system("clear")
+            except:
+                logging.info(f"Ошибка отображения {traceback.format_exc()}")
+        else:
+            time.sleep(10)
+
+    def run(self):
+        self.monitoring_screen()
 
 class Main():
     def __init__(self):
         self.running = True
+        self.MainTreeProcesses = []
 
     def general_start(self):
         """TODO: Проверить"""
@@ -24,25 +45,26 @@ class Main():
             google_service=self.MainTreeProcesses[0]))
         for _ in range(len(self.MainTreeProcesses), cpu_counts-2):
             self.MainTreeProcesses.append(InstPars(
-                LOGIN=config['Instagram']['Login'],
-                PASSWORD=config['Instagram']['Password'],
-                invisable=True,
+                LOGIN='',
+                PASSWORD='',
+                invisable=False,
                 google_services=self.MainTreeProcesses[0]))
+            break
+        # Для этого модуля логин и пароль не нужны он работает только с MpStats
         self.MainTreeProcesses.append(InstPars(
-            LOGIN=config['Instagram']['Login'],
-            PASSWORD=config['Instagram']['Password'],
             invisable=True,
             google_services=self.MainTreeProcesses[0],
             checking=True))
-        self.MainTreeProcesses[1].run() # Собираем данные для пользователей
-        # Запускаем потоки
-
+        self.MainTreeProcesses[1] # Собираем данные для пользователей
+        # Инициируем мониторинг
+        monitor = Monitor()
+        monitor.main_class = self
+        monitor.start()
         for proc in self.MainTreeProcesses:
             try:
                 proc.start()
             except:
                 pass
-        Thread(target=monitoring_screen, args=(self)).run()
         while self.MainTreeProcesses[0].running:
             while self.MainTreeProcesses[1].working_data != []:
                 for proc in self.MainTreeProcesses[2:-1]:# со второго процесса идет добавление ссылок
@@ -51,9 +73,11 @@ class Main():
                             self.MainTreeProcesses[1].working_data.pop())
                     except:
                         pass
+                monitor.main_class = self
         else:
             for proc in self.MainTreeProcesses[1:]:
                 proc.running = False
+            monitor.main_class = self
 
     def connection_speed(self):
         pass
@@ -115,7 +139,6 @@ class Main():
         except:
             os.system("clear")
             return (self.main_menu())
-
         match chs:
             case 1:
                 try:
@@ -132,7 +155,7 @@ class Main():
                                  PASSWORD=config['Instagram']['Password'],
                                  google_services=googl,
                                  invisable=False,
-                                 USERPASSPROXY="feS6nu:vYWByH5ev7yr@77.253.215.117:1041")
+                                 USERPASSPROXY="efUTdA:zUe9ak1UfUZ2@77.253.215.117:1045 ")
                     i.check_this_pages.append(
                         ("https://instagram.com/nastya_pro_wb", 5000))
                     # i.run()
@@ -238,8 +261,8 @@ class Main():
                                         config[sec][options[i]] + l[i]
                                     print(options[i])
                             case 'Instagram':
-                                l = ['| логин',
-                                     '| пароль',
+                                l = ['| Таблица логинов и паролей',
+                                     '| Значение масс-лукинга (если переборщить аккаунт забанят)',
                                      '| Ожидание для входа в профиль(сек)',
                                      '| Максимальное собранное число публикаций',
                                      '| Время после прогрузки страницы пользователя',
@@ -296,19 +319,7 @@ class Main():
                 return (self.main_menu())
 
 
-def monitoring_screen(mainproc: Main):
-    while mainproc.MainTreeProcesses[0].running:
-        try:
-            mainproc.google_monitor(mainproc.MainTreeProcesses[0])
-            mainproc.tele_monitor(mainproc.MainTreeProcesses[1])
-            for proc in mainproc.MainTreeProcesses[2:]:
-                mainproc.inst_monitor(proc)
-            time.sleep(3)
-            os.system("clear")
-        except:
-            logging.info(f"Ошибка отображения {traceback.format_exc()}")
-    else:
-        time.sleep(10)
+
 
 
 if __name__ == "__main__":
