@@ -1,2 +1,0 @@
-[48489:48489:0207/151507.769210:WARNING:chrome_main_delegate.cc(607)] This is Chrome version 109.0.5414.119 (not a warning)
-[48527:48527:0100/000000.281111:WARNING:sandbox_linux.cc(385)] InitializeSandbox() called with multiple threads in process gpu-process.
