@@ -16,7 +16,7 @@ class GoogleService(Thread):
         # Объект данных
         # Сохраняем отдельным объектом базу данных
         self.table_data = self.formating_to_dict(self.get_all_values_db())
-
+        self.instagram_acc_len = 0
         # При запуске работать постоянно(пока не будет передано False)
         self.running = True
 
@@ -32,6 +32,9 @@ class GoogleService(Thread):
         except HttpError as error:
             logging.error(f"An error occurred: {error}")
             return error
+
+
+##################################################################################################
 
     def telegram_channels(self, range_names="Лист1!A:W"):
         spreadsheet_id = config["Telegram"]["table_id"]
@@ -49,6 +52,43 @@ class GoogleService(Thread):
             logging.error(f"An error occurred: {error}")
             return error
 
+    def instagram_accounts(self,range_names="Лист1!A:W"):
+        """ Выгружает инстаграм аккаунты с гугл таблицы
+
+        Returns:
+            list[list]: Каждый аккаунт в формате [["данные","количество выполненных действий","дата последнего работы"]] 
+        """
+        spreadsheet_id = config["Instagram"]["table_id"]
+        try:
+            range_names = range_names
+            result = self.service.spreadsheets().values().batchGet(
+                spreadsheetId=spreadsheet_id, ranges=range_names).execute()
+            ranges = result.get('valueRanges', [])
+            # logging.info(f"{len(ranges)} ranges retrieved")
+            result = result.get('valueRanges')[0].get('values')[1:]
+            self.instagram_acc_len = len(result) # обновление количества аккаунтов
+            return result
+        except HttpError as error:
+            logging.error(f"An error occurred: {error}")
+            return error
+
+    def check_account_limit(self,data):
+        if len(data) == 5:
+            date = data[2]
+            count = int(data[1])
+            if type(date) == str and date != '':
+                date = datetime.datetime.strptime(date,"%Y-%m-%d %H:%M")
+            else:
+                return False
+            day_left = (datetime.datetime.timestamp(datetime.datetime.now()) - datetime.datetime.timestamp(date))/86400
+        
+            if day_left >= 1:
+                return(True)
+            elif count < int(config["Instagram"]["total_actions"]):
+                return(True)
+        return False
+##################################################################################################
+    
     def formating_to_dict(self, data: list):
         dct = {}
         if data:

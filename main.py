@@ -29,7 +29,7 @@ class Main():
     def __init__(self):
         self.running = True
         self.MainTreeProcesses = []
-
+        
     def general_start(self):
         """TODO: Проверить"""
         cpu_counts = os.cpu_count()
@@ -37,30 +37,59 @@ class Main():
         '''
         0 - Google Service
         1 - Telegram
-        2+ - InstPars 
+        2+ - InstPars
+        -1 - InstPars(перепроверка)
         '''
         # Добоавляем потоки
         self.MainTreeProcesses.append(GoogleService())
         self.MainTreeProcesses.append(TelegramPars(
             google_service=self.MainTreeProcesses[0]))
-        for _ in range(len(self.MainTreeProcesses), cpu_counts-2):
-            self.MainTreeProcesses.append(InstPars(
-                LOGIN='',
-                PASSWORD='',
-                invisable=False,
-                google_services=self.MainTreeProcesses[0]))
-            break
+        self.MainTreeProcesses[0].start() # Запуск гугл модуля
+        self.MainTreeProcesses[1] # Собираем данные о пользователей
+
+    
+        
+        Instagram_Accounts = self.MainTreeProcesses[0].instagram_accounts() # Получаем "сырые" аккаунт
+        Instagram_Accounts = list(filter(lambda x: self.MainTreeProcesses[0].check_account_limit(x),Instagram_Accounts))
+        if len(Instagram_Accounts) < cpu_counts-4:# Защита если количество подходящих акканутов нет
+            total = len(Instagram_Accounts)
+        else:
+            total =  cpu_counts-4
+        for _ in range(len(self.MainTreeProcesses), total):
+            try:
+                acc_data = Instagram_Accounts.pop()
+                logpass = acc_data[0].split(":")[:2]
+                self.MainTreeProcesses.append(InstPars(
+                    LOGIN = logpass[0],
+                    PASSWORD = logpass[1],
+                    PROFILE_ID = acc_data[3],
+                    PORT = acc_data[4],
+                    invisable=False,
+                    google_services=self.MainTreeProcesses[0]))
+                print(self.MainTreeProcesses[_].LOGIN,self.MainTreeProcesses[_].PASSWORD,self.MainTreeProcesses[_].PROFILE_ID,self.MainTreeProcesses[_].PORT)
+                time.sleep(1.5)
+            except IndexError:
+                print("Аккаунтов на все потоки не вхатило")
+                logging.info("Аккаунтов на все потоки не хватило")
+                time.sleep(3)
+
+        
+        
+        
         # Для этого модуля логин и пароль не нужны он работает только с MpStats
         self.MainTreeProcesses.append(InstPars(
             invisable=True,
             google_services=self.MainTreeProcesses[0],
             checking=True))
-        self.MainTreeProcesses[1] # Собираем данные для пользователей
+
+
         # Инициируем мониторинг
         monitor = Monitor()
         monitor.main_class = self
         monitor.start()
-        for proc in self.MainTreeProcesses:
+        
+        #  "Поток-менеджмент"
+        for proc in self.MainTreeProcesses[2:]: # Запускаемся со второго потому что Гугл и Телега уже запущены
             try:
                 proc.start()
             except:
@@ -74,6 +103,7 @@ class Main():
                     except:
                         pass
                 monitor.main_class = self
+            # for insta_parser in self.MainTreeProcesses[2:-1]:    
         else:
             for proc in self.MainTreeProcesses[1:]:
                 proc.running = False
@@ -105,6 +135,9 @@ class Main():
             f"Текущая база данных: https://docs.google.com/spreadsheets/d/{config['Google']['table_id']}/")
         print(
             f"База для телеграмм постов: https://docs.google.com/spreadsheets/d/{config['Telegram']['table_id']}/")
+        print(
+            f"Аккаунты инстаграма хранятся тут: https://d1ocs.google.com/spreadsheets/d/{config['Instagram']['table_id']}\n\tПолучено:{google_thread.instagram_acc_len}")
+           
         print("-"*20)
 
     def tele_monitor(self, telegram_thread: TelegramPars):

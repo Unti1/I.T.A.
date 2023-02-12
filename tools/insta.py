@@ -5,11 +5,11 @@ from tools.phone import VirtualNumber
 
 
 class InstPars(Thread):
-    def __init__(self, LOGIN: str = "", PASSWORD: str = "", USERPASSPROXY: str = None, invisable=False, google_services: GoogleService = None,checking = False) -> None:
+    def __init__(self, LOGIN: str = "", PASSWORD: str = "", PORT: str = '',PROFILE_ID: str = '', invisable=False, google_services: GoogleService = None,checking = False) -> None:
         super(InstPars, self).__init__()
         
         # Эмулятор
-        self.browser_startUp(USERPASSPROXY = USERPASSPROXY, invisable = invisable)
+        self.browser_startUp(invisable = invisable)
         self.action = ActionChains(self.driver)
         # Переменные
         self.status_of_working: bool = True
@@ -37,37 +37,27 @@ class InstPars(Thread):
         self.total_len_check = len(self.check_this_pages)
         self.checked_pages = {}
 
-    def browser_startUp(self, USERPASSPROXY, invisable):
+    def browser_startUp(self, invisable):
         """Создание настройка и создания эмуляции браузера
         """
         # Настройка браузера Google
         options = webdriver.ChromeOptions()
-        # options.binary_location = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"
         options.add_argument("window-size=1600,900")
-        # подгрузка кэша браузера
-        options.add_argument('--user-data-dir={}/Cache'.format(os.getcwd()))
-        # выбор профиля кэша
-        options.add_argument('--profile-directory=Default')
         # Доп. параметры
         options.add_argument('--disable-logging')
+        options.add_argument('--ignore-error')
         options.add_argument(
             "user-agent='Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.5249.103 Safari/537.36'")
-        options.add_argument('--ignore-error')
 
         if invisable:
             options.add_argument('--headless')
         options.add_argument('--no-sandbox')
-        options.add_argument('--disable-dev-shm-usage')
-        
-        if USERPASSPROXY:
-            pass
-            # options.add_argument('--proxy-server=%s' % USERPASSPROXY)
-            # options.add_extension(self.__proxy_act(USERPASSPROXY))
+
         serv = Service(ChromeDriverManager().install())
         # Запуск эмулятора браузера
         self.driver: webdriver.Chrome = webdriver.Chrome(
             service=serv, options=options)
-
+        
     def __proxy_act(self, userpassproxy):
         # rotating proxy
         PROXY_HOST = f'{userpassproxy.split("@")[1].split(":")[0]}'
