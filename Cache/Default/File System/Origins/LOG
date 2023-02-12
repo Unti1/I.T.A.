@@ -1,4 +1,0 @@
-2023/01/14-20:04:32.911 3af4 Log #3: 5 ops saved to Table #5 OK
-2023/01/14-20:04:33.917 3af4 Archiving C:\MyWork\Orders\InstaTeleAnalyzer\Cache\Default\File System\Origins/000003.log: IO error: C:\MyWork\Orders\InstaTeleAnalyzer\Cache\Default\File System\Origins/000003.log: Could not rename file: File currently in use. (ChromeMethodBFE: 14::RenameFile::2)
-2023/01/14-20:04:33.917 3af4 Table #4: 5 entries OK
-2023/01/14-20:04:34.628 2408 Archiving C:\MyWork\Ord2023/01/14-20:04:34.927 3af4 Archiving C:\MyWork\Orders\InstaTeleAnalyzer\Cache\Default\File System\Origins/MANIFEST-000001: IO error: C:\MyWork\Orders\InstaTeleAnalyzer\Cache\Default\File System\Origins/MANIFEST-000001: Could not rename file: File currently in use. (ChromeMethodBFE: 14::RenameFile::2)
