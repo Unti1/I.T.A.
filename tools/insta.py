@@ -2,19 +2,22 @@ from settings.config import *
 from tools.google import GoogleService
 from tools.mpstats import MpStats
 from tools.phone import VirtualNumber
+from tools.mailru import mailru_mail
 
 
 class InstPars(Thread):
-    def __init__(self, LOGIN: str = "", PASSWORD: str = "", PORT: str = '',PROFILE_ID: str = '', invisable=False, google_services: GoogleService = None,checking = False) -> None:
+    def __init__(self, PROFILE_DATA: str = "", invisable=False, google_services: GoogleService = None,checking = False) -> None:
         super(InstPars, self).__init__()
         
         # Эмулятор
-        self.browser_startUp(invisable = invisable)
+        self.browser_startUp(PROFILE_DATA[3],invisable = invisable)
         self.action = ActionChains(self.driver)
+        self.profile_data = PROFILE_DATA
+        
         # Переменные
         self.status_of_working: bool = True
-        self.LOGIN: str = LOGIN
-        self.PASSWORD: str = PASSWORD
+        self.LOGIN: str = PROFILE_DATA[0].split(":")[0]
+        self.PASSWORD: str = PROFILE_DATA[0].split(":")[1]
         # Сторонние классы
         self.google_services: GoogleService = google_services
         # self.phone = VirtualNumber()
@@ -30,6 +33,8 @@ class InstPars(Thread):
             'actions': "0",
 
         }
+        self.profile_data = PROFILE_DATA
+        self.mail = mailru_mail(self.driver)
         self.used_actions = 0
         self.running = True
         self.checking = checking
@@ -37,91 +42,30 @@ class InstPars(Thread):
         self.total_len_check = len(self.check_this_pages)
         self.checked_pages = {}
 
-    def browser_startUp(self, invisable):
+    def browser_startUp(self, PROFILE_ID,invisable):
         """Создание настройка и создания эмуляции браузера
         """
         # Настройка браузера Google
+        chrome_drive_path = Service('./chromedriver.exe')
         options = webdriver.ChromeOptions()
+        reg_url = f'http://localhost:3001/v1.0/browser_profiles/{PROFILE_ID}/start?automation=1'
+        response = requests.get(reg_url)
+        respons_json = response.json()
+        PORT = str(respons_json['automation']['port'])
+        options.debugger_address = '127.0.0.1:'+ PORT
         options.add_argument("window-size=1600,900")
         # Доп. параметры
         options.add_argument('--disable-logging')
         options.add_argument('--ignore-error')
-        options.add_argument(
-            "user-agent='Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.5249.103 Safari/537.36'")
-
         if invisable:
             options.add_argument('--headless')
         options.add_argument('--no-sandbox')
 
-        serv = Service(ChromeDriverManager().install())
+        # serv = Service(ChromeDriverManager().install())
         # Запуск эмулятора браузера
-        self.driver: webdriver.Chrome = webdriver.Chrome(
-            service=serv, options=options)
-        
-    def __proxy_act(self, userpassproxy):
-        # rotating proxy
-        PROXY_HOST = f'{userpassproxy.split("@")[1].split(":")[0]}'
-        PROXY_PORT = f'{userpassproxy.split("@")[1].split(":")[1]}'
-        PROXY_USER = f'{userpassproxy.split("@")[0].split(":")[0]}'
-        PROXY_PASS = f'{userpassproxy.split("@")[0].split(":")[1]}'
-
-        manifest_json = """
-{
-    "version": "1.0.0",
-    "manifest_version": 2,
-    "name": "Chrome Proxy",
-    "permissions": [
-        "proxy",
-        "tabs",
-        "unlimitedStorage",
-        "storage",
-        "<all_urls>",
-        "webRequest",
-        "webRequestBlocking"
-    ],
-    "background": {
-        "scripts": ["background.js"]
-    },
-    "minimum_chrome_version":"22.0.0"
-}
-"""
-
-        background_js = """
-var config = {
-        mode: "fixed_servers",
-        rules: {
-          singleProxy: {
-            scheme: "http",
-            host: "%s",
-            port: parseInt(%s)
-          },
-          bypassList: ["localhost"]
-        }
-      };
-
-chrome.proxy.settings.set({value: config, scope: "regular"}, function() {});
-
-function callbackFn(details) {
-    return {
-        authCredentials: {
-            username: "%s",
-            password: "%s"
-        }
-    };
-}
-
-chrome.webRequest.onAuthRequired.addListener(
-            callbackFn,
-            {urls: ["<all_urls>"]},
-            ['blocking']
-);
-""" % (PROXY_HOST, PROXY_PORT, PROXY_USER, PROXY_PASS)
-        pluginfile = 'settings/proxy_auth_plugin.zip'
-
-        with zipfile.ZipFile(pluginfile, 'w') as zp:
-            zp.writestr("manifest.json", manifest_json)
-            zp.writestr("background.js", background_js)
-        return (pluginfile)
+        # self.driver: webdriver.Chrome = webdriver.Chrome(
+            # service=serv, options=options)
+        self.driver = webdriver.Chrome(service=chrome_drive_path,chrome_options=options)
 
     def __publishes_text_collect(self, publish):
         self.__acception_challange(publish)
@@ -202,6 +146,7 @@ chrome.webRequest.onAuthRequired.addListener(
             sto = []
         pub.extend(sto)
         pub.extend(rls)
+        self.update_insta_acc_table()
         return (pub)
 
     def all_publish_collect(self, page):
@@ -452,10 +397,8 @@ chrome.webRequest.onAuthRequired.addListener(
             self.status['auth'] = "Попытка авторизации"
             try:
                 time.sleep(2)
-                allow_cookie = self.driver.find_elements(By.XPATH,"//div/button")[-1]
-                print(allow_cookie.text)
-                if "allow" in allow_cookie.text.lower():
-                    allow_cookie.click()
+                allow_cookie = self.driver.find_elements(By.XPATH,'//div[role="dialog"]//button')[-1]
+                allow_cookie.click()
             except:
                 pass
             WebDriverWait(self.driver, int(config['Instagram']['logining_wait'])).until(
@@ -484,19 +427,19 @@ chrome.webRequest.onAuthRequired.addListener(
                 btn = self.driver.find_elements(By.XPATH, '//button')[1]
                 btn.click()
                 
-            ######### Прохождение челленджей #######
+            ######### Проверка челленджей #######
             self.__acception_challange()
 
             ######### Этап сохранения браузера для автологининга #########
-            try:
-                WebDriverWait(self.driver, int(config['Instagram']['logining_wait'])).until(
-                    EC.element_to_be_clickable((By.XPATH, '//section')))
-                if "cохранить данные для входа?" in self.driver.page_source.lower():
-                    access_btn = self.driver.find_elements(
-                        By.XPATH, "//button")[0]
-                    access_btn.click()
-            except Exception as e:
-                pass
+            # try:
+            #     WebDriverWait(self.driver, int(config['Instagram']['logining_wait'])).until(
+            #         EC.element_to_be_clickable((By.XPATH, '//section')))
+            #     if "cохранить данные для входа?" in self.driver.page_source.lower():
+            #         access_btn = self.driver.find_elements(
+            #             By.XPATH, "//button")[0]
+            #         access_btn.click()
+            # except Exception as e:
+            #     pass
         except exceptions.TimeoutException as e:
             self.status['auth'] = "Авторизирован"
             # logging.info("Авторизован")
@@ -507,13 +450,10 @@ chrome.webRequest.onAuthRequired.addListener(
 
     def __acception_challange(self, page="https://instagram.com"):
         """Модуль обхода блокировки """
-        chose_method = None  # принимает либо "mail" либо "sms"
+        chose_method = None  # принимает "mail"
         while "challenge" in self.driver.current_url:
             self.status['guard'] = 'Обход заморозки'
             if "что вы владелец этого аккаунта" in self.driver.page_source.lower():
-                self.running = False   
-                return(self.driver.quit())
-                '''Модуль не используется
                 self.status['guard'] = 'Выбор метода получения кода'
                 try:
                     WebDriverWait(self.driver, 10).until(
@@ -526,79 +466,47 @@ chrome.webRequest.onAuthRequired.addListener(
                             but.click()
                             chose_method = "mail"
                             break
-                        elif "номер" in but.text.lower():
-                            but.click()
-                            chose_method = "sms"
-                            break
                     all_buttons[-1].click()  # обычно последняя кнопка это вход
 
                     WebDriverWait(self.driver, 10).until(
                         EC.element_to_be_clickable((By.XPATH, '//input')))
-                    # match chose_method:
-                    #     case "mail":
-                    #         self.status['guard'] = 'Ожидание кода на почте'
-                    #         code = self.google_services.get_mail_code()
-                    #         btns = self.driver.find_elements(
-                    #             By.XPATH, '//div[@role="button"]')
-                    #         if code == "":
-                    #             for btn in btns:
-                    #                 if "новый код" in btn.text.lower():
-                    #                     btn.click()
-                    #                     break
-                    #             continue
-                    #         else:
-                    #             self.driver.find_element(
-                    #                 By.XPATH, '//input').send_keys(code)
-                    #             for btn in btns:
-                    #                 if "подтвердить" in btn.text.lower():
-                    #                     btn.click()
-                    #                     break
-                    #     case "sms":
-                    #         self.status['guard'] = 'Ожидание кода по номеру'
-                    #         # code = self.phone.check_sms()
-                    #         if code == "":
-                    #             btns = self.driver.find_elements(
-                    #                 By.XPATH, '//div[@role="button"]')
-                    #             for btn in btns:
-                    #                 if "новый код" in btn.text.lower():
-                    #                     btn.click()
-                    #                     break
-                    #             continue
-                    #         else:
-                    #             self.driver.find_element(
-                    #                 By.XPATH, '//input').send_keys(code)
-                    #             for btn in btns:
-                    #                 if "подтвердить" in btn.text.lower():
-                    #                     btn.click()
-                    #                     break
+                    match chose_method:
+                        case "mail":
+                            self.status['guard'] = 'Ожидание кода на почте'
+                            code = self.mail.mail_check()
+                            btns = self.driver.find_elements(
+                                By.XPATH, '//div[@role="button"]')
+                            if code == "":
+                                for btn in btns:
+                                    if "новый код" in btn.text.lower():
+                                        btn.click()
+                                        break
+                                continue
+                            else:
+                                self.driver.find_element(
+                                    By.XPATH, '//input').send_keys(code)
+                                for btn in btns:
+                                    if "подтвердить" in btn.text.lower():
+                                        btn.click()
+                                        break
                 except:
-                    pass'''
+                    pass
             elif "верна ли информация вашего профиля" in self.driver.page_source.lower():
-                self.running = False
-                return(self.driver.quit())
-                ''' Модуль не используется
                 WebDriverWait(self.driver, 10).until(
                     EC.element_to_be_clickable((By.XPATH, '//div[@role="button"]')))
                 for but in self.driver.find_elements(By.XPATH, '//div[@role="button"]'):
                     if 'да' in but.text.lower():
-                        but.click()'''
+                        but.click()
             else:
-                self.running = False
-                return(self.driver.quit())
-                '''Модуль не используется
                 try:
                     WebDriverWait(self.driver, 10).until(
                         EC.element_to_be_clickable((By.XPATH, '//input')))
                     if 'адрес' in self.driver.page_source.lower():
-                        chose_method = 'sms'
-                        print("Верификация по номеру")
-                    else:
-                        print("Верификация по почте")
                         chose_method = 'mail'
 
                     match chose_method:
                         case "mail":
-                            code = self.google_services.get_mail_code()
+                            code = self.mail.mail_check()
                             if code == "":
                                 continue
                             else:
@@ -606,20 +514,8 @@ chrome.webRequest.onAuthRequired.addListener(
                                     By.XPATH, '//input').send_keys(code)
                                 self.driver.find_element(
                                     By.XPATH, '//div[@role="button"]').click()
-                        case "sms":
-                            code = self.phone.check_sms()
-                            if code == "":
-                                # по идее кнопка повторной отправки смс
-                                self.driver.find_elements(
-                                    By.XPATH, '//div[@role="button"]')[0].click()
-                                continue
-                            else:
-                                self.driver.find_element(
-                                    By.XPATH, '//input').send_keys(code)
-                                self.driver.find_elements(
-                                    By.XPATH, '//div[@role="button"]')[-1].click()
                 except:
-                    pass'''
+                    pass
         else:
             self.status['guard'] = 'Не заблокирован'
             return (self.driver.get(page))
@@ -650,38 +546,57 @@ chrome.webRequest.onAuthRequired.addListener(
             time.sleep(3600)
         pass
     
+    def update_insta_acc_table(self):
+        self.profile_data[1] = f"{self.used_actions}"
+        time_now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        self.profile_data[2] = f"{time_now}"
+        self.google_services.instagram_update_values(self.profile_data[0],self.profile_data)
+
     def run(self):
         self.__login()
-        while self.running and self.used_actions <= config["Instagram"]["total_actions"]:
+        while self.running and self.used_actions <= int(config["Instagram"]["total_actions"]):
             if self.checking:
                 try:
                     self.always_rechecking_by_time()
                 except:
                     logging.error(traceback.format_exc())
             else:
-                if len(self.check_this_pages) != 0:
-                    if len(self.check_this_pages) > self.total_len_check:
-                        self.total_len_check = len(self.check_this_pages)
-                    data = self.check_this_pages.pop()
-                    user_url = data[0]
-                    logging.info(user_url)
-                    if user_url in self.checked_pages.keys():
-                        continue
+                try:
+                    if len(self.check_this_pages) != 0:
+                        if len(self.check_this_pages) > self.total_len_check:
+                            self.total_len_check = len(self.check_this_pages)
+                        data = self.check_this_pages.pop()
+                        user_url = data[0]
+                        logging.info(user_url)
+                        if user_url in self.checked_pages.keys():
+                            continue
 
-                    cost = data[1]
-                    self.status['publish'] = "Ещё не запущен"
-                    self.status['realse'] = "Ещё не запущен"
-                    self.status['publish'] = "Ещё не запущен"
-                    self.status['guard'] = "Не заблокирован"
-                    self.status['actions'] = f"{self.used_actions}"
-                    while self.mpstats.working != True:
-                        self.status['guard'] = 'Смените API-токен MpStats'
+                        cost = data[1]
+                        self.status['publish'] = "Ещё не запущен"
+                        self.status['realse'] = "Ещё не запущен"
+                        self.status['publish'] = "Ещё не запущен"
+                        self.status['guard'] = "Не заблокирован"
+                        self.status['actions'] = f"{self.used_actions}"
+                        while self.mpstats.working != True:
+                            self.status['guard'] = 'Смените API-токен MpStats'
+                            time.sleep(5)
+                        self.checked_pages[user_url] = self.all_profile_collect(
+                            user_url)
+                        self.mpstats_analize_profile(user_url, cost)
+                    else:
                         time.sleep(5)
-                    self.checked_pages[user_url] = self.all_profile_collect(
-                        user_url)
-                    self.mpstats_analize_profile(user_url, cost)
-                else:
-                    time.sleep(5)
+                except:
+                    self.update_insta_acc_table()
+                    self.running = False
+                    self.driver.quit()
+        else:
+            try:
+                self.update_insta_acc_table()
+                for i in range(len(self.driver.window_handles)):
+                    self.driver.close()
+            except Exception as e:
+                logging.info(e)
+                    
 
 if __name__ == "__main__":
     googl = GoogleService()

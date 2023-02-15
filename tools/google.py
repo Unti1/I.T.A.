@@ -87,6 +87,58 @@ class GoogleService(Thread):
             elif count < int(config["Instagram"]["total_actions"]):
                 return(True)
         return False
+
+    def inst_find_value(self, value, column):
+        try:
+            spreadsheet_id = config["Instagram"]["table_id"]
+            column_translate = {1: "A:A", 2: "B:B", 3: "C:C", 4: "D:D",
+                                5: "E:E", 6: "F:F", 7: "G:G", 8: "H:H", 9: "I:I"}
+            rangeName = f"Лист1!{column_translate[column]}"
+            result = self.service.spreadsheets().values().get(
+                spreadsheetId=spreadsheet_id, range=rangeName).execute()
+            values = result.get('values', [])
+            for i in range(len(values)):
+                if values[i] != []:
+                    if values[i][0] == value:
+                        return i + 1
+            return None
+        except Exception as e:
+            logging.error(e)
+
+    def instagram_update_values(self, search_value: str, value: list):
+        '''
+        Аргументы
+        1 - значение - поиск в таблице по написанию
+        2 - список замены (с первым параметром по которому искали)
+        '''
+        spreadsheet_id = config["Instagram"]["table_id"]
+        if len(value) < 2:
+            return
+        try:
+            ind = self.inst_find_value(search_value, 1)
+            if ind == None:
+                return
+
+            range_name = f"Лист1!A{ind}:F{ind}"
+            data = [
+                {
+                    'range': range_name,
+                    'values': [value]
+                },
+                # Additional ranges to update ...
+            ]
+            body = {
+                'valueInputOption': "USER_ENTERED",
+                'data': data
+            }
+
+            result = self.service.spreadsheets().values().batchUpdate(
+                spreadsheetId=spreadsheet_id, body=body).execute()
+            # logging.info(f"{(result)} cells updated.")
+            return result
+        except HttpError as error:
+            logging.error(f"An error occurred: {error}")
+            return error
 ##################################################################################################
     
     def formating_to_dict(self, data: list):

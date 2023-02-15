@@ -58,20 +58,14 @@ class Main():
         for _ in range(len(self.MainTreeProcesses), total):
             try:
                 acc_data = Instagram_Accounts.pop()
-                logpass = acc_data[0].split(":")[:2]
+                logpass = acc_data
                 self.MainTreeProcesses.append(InstPars(
-                    LOGIN = logpass[0],
-                    PASSWORD = logpass[1],
-                    PROFILE_ID = acc_data[3],
-                    PORT = acc_data[4],
+                    PROFILE_DATA=acc_data,
                     invisable=False,
                     google_services=self.MainTreeProcesses[0]))
-                print(self.MainTreeProcesses[_].LOGIN,self.MainTreeProcesses[_].PASSWORD,self.MainTreeProcesses[_].PROFILE_ID,self.MainTreeProcesses[_].PORT)
-                time.sleep(1.5)
             except IndexError:
                 print("Аккаунтов на все потоки не вхатило")
                 logging.info("Аккаунтов на все потоки не хватило")
-                time.sleep(3)
 
         
         
@@ -96,14 +90,32 @@ class Main():
                 pass
         while self.MainTreeProcesses[0].running:
             while self.MainTreeProcesses[1].working_data != []:
-                for proc in self.MainTreeProcesses[2:-1]:# со второго процесса идет добавление ссылок
+                for proc in self.MainTreeProcesses[2:-2]:# со второго процесса идет добавление ссылок
                     try:
                         proc.check_this_pages.append(
                             self.MainTreeProcesses[1].working_data.pop())
                     except:
                         pass
                 monitor.main_class = self
-            # for insta_parser in self.MainTreeProcesses[2:-1]:    
+            if Instagram_Accounts != []:
+                for ind in range(2,len(self.MainTreeProcesses[:-2])):
+                    if self.MainTreeProcesses[ind].running == False:
+                        try:
+                            acc_data = Instagram_Accounts.pop()
+                            logpass = acc_data[0].split(":")[:2]
+                            self.MainTreeProcesses.append(InstPars(
+                                LOGIN = logpass[0],
+                                PASSWORD = logpass[1],
+                                PROFILE_ID = acc_data[3],
+                                PORT = acc_data[4],
+                                invisable=False,
+                                google_services=self.MainTreeProcesses[0]))
+                        except:
+                            break
+            else:
+                if len(list(filter(lambda x: x.running == False,self.MainTreeProcesses[2:-2]))) == len(self.MainTreeProcesses[2:-2]):
+                    logging.info("Завершение работы программы")
+                    break
         else:
             for proc in self.MainTreeProcesses[1:]:
                 proc.running = False
@@ -119,6 +131,7 @@ class Main():
         print("-"*6, "Instagram", "-"*6)
         print(inst_thread.name)
         print(f"Авторизация: {inst_thread.status['auth']}")
+        print(f"Профиль: {inst_thread.LOGIN}")
         print(f"Сбор публикаций: {inst_thread.status['publish']}")
         if bool(config["Instagram"]["story_look"]):
             print(f"Сбор рилсов: {inst_thread.status['stories']}")
@@ -184,11 +197,11 @@ class Main():
             case 2:
                 try:
                     googl = GoogleService()
-                    i = InstPars(LOGIN=config['Instagram']['Login'],
-                                 PASSWORD=config['Instagram']['Password'],
+                    i = InstPars(LOGIN=googl.instagram_accounts()[0][0].split(":")[0],
+                                 PASSWORD=googl.instagram_accounts()[0][0].split(":")[1],
+                                 PROFILE_ID=googl.instagram_accounts()[0][3],
                                  google_services=googl,
-                                 invisable=False,
-                                 USERPASSPROXY="efUTdA:zUe9ak1UfUZ2@77.253.215.117:1045 ")
+                                 invisable=False)
                     i.check_this_pages.append(
                         ("https://instagram.com/nastya_pro_wb", 5000))
                     # i.run()
