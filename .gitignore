@@ -12,3 +12,9 @@ lib64
 bin
 Cache
 pyvenv.cfg
+test.txt
+until_1.session-journal
+until_1.session
+tools/__pycache__/google.cpython-311.pyc
+logs.log
+logpass.txt

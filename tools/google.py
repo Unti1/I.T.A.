@@ -73,7 +73,7 @@ class GoogleService(Thread):
             return error
 
     def check_account_limit(self,data):
-        if len(data) == 6:
+        if len(data) > 5:
             date = data[2]
             count = int(data[1])
             if type(date) == str and date != '':

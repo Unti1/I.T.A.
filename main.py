@@ -52,26 +52,25 @@ class Main():
         
         Instagram_Accounts = self.MainTreeProcesses[0].instagram_accounts() # Получаем "сырые" аккаунт
         Instagram_Accounts = list(filter(lambda x: self.MainTreeProcesses[0].check_account_limit(x),Instagram_Accounts))
-        print(Instagram_Accounts)
-        if len(Instagram_Accounts) < cpu_counts-4:# Защита если количество подходящих акканутов нет
+        # print(Instagram_Accounts)
+        if len(Instagram_Accounts) < cpu_counts-(len(self.MainTreeProcesses)+1):# Защита если количество подходящих акканутов нет
             total = len(Instagram_Accounts)
         else:
-            total =  cpu_counts-4
-        for _ in range(len(self.MainTreeProcesses), total):
+            total =  cpu_counts-(len(self.MainTreeProcesses)+2)
+
+        for _ in range(len(self.MainTreeProcesses), len(self.MainTreeProcesses)+total):
             try:
                 acc_data = Instagram_Accounts.pop()
-                logging.info(acc_data)
                 self.MainTreeProcesses.append(InstPars(
                     PROFILE_DATA=acc_data,
                     invisable=False,
                     google_services=self.MainTreeProcesses[0]))
+                logging.info(self.MainTreeProcesses[_],acc_data)
             except IndexError:
                 print("Аккаунтов на все потоки не вхатило")
                 logging.info("Аккаунтов на все потоки не хватило")
+                logging.info(traceback.format_exc())
                 break
-
-        
-        
         
         # Для этого модуля логин и пароль не нужны он работает только с MpStats
         self.MainTreeProcesses.append(InstPars(
@@ -196,6 +195,8 @@ class Main():
                     self.general_start()
                 except Exception as e:
                     print("Произошла ошибка...")
+                    self.MainTreeProcesses[0].running = False
+                    self.MainTreeProcesses = []
                     logging.error(traceback.format_exc())
                     time.sleep(5)
                 return (self.main_menu())
@@ -362,6 +363,7 @@ class Main():
                     time.sleep(5)
                 return (self.main_menu())
             case 99:
+                self.MainTreeProcesses[0].running = False
                 self.running = False
                 return None
             case _:
