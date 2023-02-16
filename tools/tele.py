@@ -176,6 +176,7 @@ class TelegramPars():
             if self.working_data != []:
                 self.working_data = list(map(lambda dat: dat[:-1],self.working_data))
             print(self.working_data)
+    
     def run(self):
         try:
             if self.all_channels != []:

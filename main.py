@@ -45,12 +45,14 @@ class Main():
         self.MainTreeProcesses.append(TelegramPars(
             google_service=self.MainTreeProcesses[0]))
         self.MainTreeProcesses[0].start() # Запуск гугл модуля
+        # self.MainTreeProcesses[1].run() # Собираем данные о пользователей
         self.MainTreeProcesses[1] # Собираем данные о пользователей
 
     
         
         Instagram_Accounts = self.MainTreeProcesses[0].instagram_accounts() # Получаем "сырые" аккаунт
         Instagram_Accounts = list(filter(lambda x: self.MainTreeProcesses[0].check_account_limit(x),Instagram_Accounts))
+        print(Instagram_Accounts)
         if len(Instagram_Accounts) < cpu_counts-4:# Защита если количество подходящих акканутов нет
             total = len(Instagram_Accounts)
         else:
@@ -58,7 +60,7 @@ class Main():
         for _ in range(len(self.MainTreeProcesses), total):
             try:
                 acc_data = Instagram_Accounts.pop()
-                logpass = acc_data
+                logging.info(acc_data)
                 self.MainTreeProcesses.append(InstPars(
                     PROFILE_DATA=acc_data,
                     invisable=False,
@@ -66,6 +68,7 @@ class Main():
             except IndexError:
                 print("Аккаунтов на все потоки не вхатило")
                 logging.info("Аккаунтов на все потоки не хватило")
+                break
 
         
         
@@ -103,13 +106,15 @@ class Main():
                         try:
                             acc_data = Instagram_Accounts.pop()
                             logpass = acc_data[0].split(":")[:2]
-                            self.MainTreeProcesses.append(InstPars(
+                            self.MainTreeProcesses.pop(ind)
+                            self.MainTreeProcesses.insert(ind,InstPars(
                                 LOGIN = logpass[0],
                                 PASSWORD = logpass[1],
                                 PROFILE_ID = acc_data[3],
                                 PORT = acc_data[4],
                                 invisable=False,
                                 google_services=self.MainTreeProcesses[0]))
+                            self.MainTreeProcesses[ind].start()
                         except:
                             break
             else:

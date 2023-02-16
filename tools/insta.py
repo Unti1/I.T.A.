@@ -46,7 +46,7 @@ class InstPars(Thread):
         """Создание настройка и создания эмуляции браузера
         """
         # Настройка браузера Google
-        chrome_drive_path = Service('./chromedriver.exe')
+        chrome_drive_path = Service('./chromedriver-linux-x64')
         options = webdriver.ChromeOptions()
         reg_url = f'http://localhost:3001/v1.0/browser_profiles/{PROFILE_ID}/start?automation=1'
         response = requests.get(reg_url)

@@ -1,6 +1,98 @@
-w23:42:57 - mtprotosender
+21:49:02 - mtprotosender
 [INFO] _connect:
  226 - Connecting to 149.154.167.51:443/TcpFull...
-23:42:57 - mtprotosender
+21:49:02 - mtprotosender
 [INFO] _connect:
  277 - Connection to 149.154.167.51:443/TcpFull complete!
+21:49:05 - __init__
+[INFO] autodetect:
+ 49 - file_cache is only supported with oauth2client<4.0.0
+21:49:08 - main
+[ERROR] main_menu:
+ 197 - Traceback (most recent call last):
+  File "/home/unti1/MyWork/Orders/InstaTeleParser/main.py", line 194, in main_menu
+    self.general_start()
+  File "/home/unti1/MyWork/Orders/InstaTeleParser/main.py", line 75, in general_start
+    self.MainTreeProcesses.append(InstPars(
+                                  ^^^^^^^^^
+  File "/home/unti1/MyWork/Orders/InstaTeleParser/tools/insta.py", line 13, in __init__
+    self.browser_startUp(PROFILE_DATA[3],invisable = invisable)
+                         ~~~~~~~~~~~~^^^
+IndexError: string index out of range
+
+21:52:29 - mtprotosender
+[INFO] _connect:
+ 226 - Connecting to 149.154.167.51:443/TcpFull...
+21:52:29 - mtprotosender
+[INFO] _connect:
+ 277 - Connection to 149.154.167.51:443/TcpFull complete!
+21:52:46 - __init__
+[INFO] autodetect:
+ 49 - file_cache is only supported with oauth2client<4.0.0
+21:52:48 - main
+[ERROR] main_menu:
+ 199 - Traceback (most recent call last):
+  File "/home/unti1/MyWork/Orders/InstaTeleParser/main.py", line 196, in main_menu
+    self.general_start()
+  File "/home/unti1/MyWork/Orders/InstaTeleParser/main.py", line 77, in general_start
+    self.MainTreeProcesses.append(InstPars(
+                                  ^^^^^^^^^
+  File "/home/unti1/MyWork/Orders/InstaTeleParser/tools/insta.py", line 13, in __init__
+    self.browser_startUp(PROFILE_DATA[3],invisable = invisable)
+                         ~~~~~~~~~~~~^^^
+IndexError: string index out of range
+
+21:53:54 - mtprotosender
+[INFO] _connect:
+ 226 - Connecting to 149.154.167.51:443/TcpFull...
+21:53:54 - mtprotosender
+[INFO] _connect:
+ 277 - Connection to 149.154.167.51:443/TcpFull complete!
+21:53:55 - __init__
+[INFO] autodetect:
+ 49 - file_cache is only supported with oauth2client<4.0.0
+21:54:51 - mtprotosender
+[INFO] _connect:
+ 226 - Connecting to 149.154.167.51:443/TcpFull...
+21:54:51 - mtprotosender
+[INFO] _connect:
+ 277 - Connection to 149.154.167.51:443/TcpFull complete!
+21:54:52 - __init__
+[INFO] autodetect:
+ 49 - file_cache is only supported with oauth2client<4.0.0
+21:59:55 - mtprotosender
+[INFO] _connect:
+ 226 - Connecting to 149.154.167.51:443/TcpFull...
+21:59:55 - mtprotosender
+[INFO] _connect:
+ 277 - Connection to 149.154.167.51:443/TcpFull complete!
+21:59:56 - __init__
+[INFO] autodetect:
+ 49 - file_cache is only supported with oauth2client<4.0.0
+22:00:42 - mtprotosender
+[INFO] _connect:
+ 226 - Connecting to 149.154.167.51:443/TcpFull...
+22:00:42 - mtprotosender
+[INFO] _connect:
+ 277 - Connection to 149.154.167.51:443/TcpFull complete!
+22:00:43 - __init__
+[INFO] autodetect:
+ 49 - file_cache is only supported with oauth2client<4.0.0
+22:01:51 - mtprotosender
+[INFO] _connect:
+ 226 - Connecting to 149.154.167.51:443/TcpFull...
+22:01:51 - mtprotosender
+[INFO] _connect:
+ 277 - Connection to 149.154.167.51:443/TcpFull complete!
+22:01:52 - __init__
+[INFO] autodetect:
+ 49 - file_cache is only supported with oauth2client<4.0.0
+22:02:21 - mtprotosender
+[INFO] _connect:
+ 226 - Connecting to 149.154.167.51:443/TcpFull...
+22:02:21 - mtprotosender
+[INFO] _connect:
+ 277 - Connection to 149.154.167.51:443/TcpFull complete!
+22:02:22 - __init__
+[INFO] autodetect:
+ 49 - file_cache is only supported with oauth2client<4.0.0

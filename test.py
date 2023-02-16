@@ -2,15 +2,15 @@ from tools.tele import *
 from tools.google import *
 
 
-s = " 1 2 3 4 5"
-s = s
 
-print(s)
+if __name__ == "__main__":
+    g = GoogleService()
+    g.start()
 
-# if __name__ == "__main__":
-#     g = GoogleService()
-#     account = g.instagram_accounts()
-#     print(account)
+    account = g.instagram_accounts()
+    print(list(map(lambda x: g.check_account_limit(x),account)))
+    account = list(filter(lambda x: g.check_account_limit(x),account))
+    print(account)
 #     account[0][-1] = '0'
 #     g.instagram_update_values(account[0][0],account[0])  
     # for acc in account:
